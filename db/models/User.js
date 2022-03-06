@@ -13,13 +13,13 @@ class User extends Model {
                 role: {type: 'string'},
                 email: {type: 'string'},
                 password: {type: 'string'},
-                phoneNumber: {type: 'string'},
+                phone_number: {type: 'string'},
                 name: {type: 'string'},
-                familyName: {type: 'string'},
+                family_name: {type: 'string'},
                 department: {type: 'string'},
-                organizationLevel: {type: 'string'},
+                organization_level: {type: 'string'},
                 office: {type: 'string'},
-                workingHour: {type: 'string'},
+                working_hour: {type: 'string'},
                 status: {type: 'string'},
             }
         }

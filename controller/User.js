@@ -58,6 +58,7 @@ class User {
         } else
             throw "Invalid Credentials!"
     }
+/*
 
     static getAllUsers() {
         return allUsers;
@@ -86,6 +87,7 @@ class User {
         this.role = "admin";
         this.status = "enable";
     }
+*/
 
     change_detail(employee, name, familyName, workingHour) {
         ChangeDetail.changeDetailByEmployee(employee, name, familyName, workingHour);

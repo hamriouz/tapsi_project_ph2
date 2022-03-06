@@ -4,7 +4,6 @@ const Admin = require("../db/models/Admin");
 const User = require("../db/models/User");
 class CreateAdmin {
     static async createAdmin(user, name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
-        // const user = await User.query().select('*').where('role', '=', "admin");
         if (user)
             throw "Admin has already been created";
 
@@ -17,7 +16,7 @@ class CreateAdmin {
             role: "admin",
             email: email,
             password: encryptedPassword,
-            phoneNumber: phoneNumber,
+            phone_number: phoneNumber,
             name: name,
             family_name: familyName,
             department: department,

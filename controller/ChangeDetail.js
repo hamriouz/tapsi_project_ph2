@@ -1,6 +1,8 @@
 const User = require("../db/models/User");
 const UserController = require("./User");
 
+// TODO kolan edit!!!
+
 class ChangeDetail {
     static changeDetailByEmployee(employee, name, familyName, workingHour) {
         if (name)

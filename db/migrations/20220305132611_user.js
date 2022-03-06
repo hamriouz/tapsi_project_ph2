@@ -5,13 +5,13 @@ exports.up = function(knex) {
             table.string("role");
             table.string("email").notNullable().unique();
             table.string("password").notNullable();
-            table.string("phoneNumber");
+            table.string("phone_number");
             table.string("name");
-            table.string("familyName");
+            table.string("family_name");
             table.string("department");
-            table.string("organizationLevel");
+            table.string("organization_level");
             table.string("office");
-            table.string("workingHour");
+            table.string("working_hour");
             table.string("status");
 
             table.timestamps(true, true);
