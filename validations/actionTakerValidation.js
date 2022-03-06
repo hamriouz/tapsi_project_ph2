@@ -1,4 +1,5 @@
 class ActionTakerValidation {
+    // TODO
     static validateAdmin(role) {
         if (role && role !== "admin")
             throw "Only a logged in admin can do this action!"

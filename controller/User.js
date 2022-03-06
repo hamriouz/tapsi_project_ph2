@@ -3,19 +3,12 @@ const Token = require("../Token");
 const ChangeDetail = require("../controller/ChangeDetail");
 const SeeDetail = require("../controller/SeeDetail");
 
+// TODO
+
 let allEmails = [];
 let allUsers = [];
-let id = 1;
 
 class User {
-    constructor(email, password) {
-        this.email = email;
-        this.password = password;
-        this._id = id;
-        id++;
-        allEmails.push(email);
-        allUsers.push(this);
-    }
 
     static removeAllUsers(){
         allUsers.length = 0;
@@ -58,36 +51,6 @@ class User {
         } else
             throw "Invalid Credentials!"
     }
-/*
-
-    static getAllUsers() {
-        return allUsers;
-    }
-
-    setEmployeeDetail(phoneNumber, name, familyName, department, organizationLevel, office, workingHour,role, status){
-        this.phoneNumber = phoneNumber;
-        this.name = name;
-        this.familyName = familyName;
-        this.department = department;
-        this.organizationLevel = organizationLevel;
-        this.office = office;
-        this.workingHour = workingHour;
-        this.role = "employee";
-        this.status = status;
-    }
-
-    setAdminDetail(phoneNumber, name, familyName, department, organizationLevel, office, workingHour) {
-        this.name = name;
-        this.familyName = familyName;
-        this.phoneNumber = phoneNumber;
-        this.department = department;
-        this.organizationLevel = organizationLevel;
-        this.office = office;
-        this.workingHour = workingHour;
-        this.role = "admin";
-        this.status = "enable";
-    }
-*/
 
     change_detail(employee, name, familyName, workingHour) {
         ChangeDetail.changeDetailByEmployee(employee, name, familyName, workingHour);

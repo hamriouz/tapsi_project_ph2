@@ -1,7 +1,5 @@
-// const User = require("../model/User");
 const bcrypt = require("bcryptjs");
 const Admin = require("../db/models/Admin");
-const User = require("../db/models/User");
 class CreateAdmin {
     static async createAdmin(user, name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
         if (user)
@@ -12,7 +10,7 @@ class CreateAdmin {
 
         let encryptedPassword = bcrypt.hash(password, 10);
 
-        await User.query().insert({
+        await Admin.query().insert({
             role: "admin",
             email: email,
             password: encryptedPassword,

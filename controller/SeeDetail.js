@@ -11,7 +11,6 @@ class SeeDetail {
     }
 
     static viewDetailOneEmployeeByAdmin(email) {
-        // let employee = User.findObjectByKey("email", email);
         return User.query().select(
             'name',
             'family_name',

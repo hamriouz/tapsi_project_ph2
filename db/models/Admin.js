@@ -12,7 +12,7 @@ class Admin extends Model {
                 id: {type: 'integer'},
                 role: {type: 'string'},
                 email: {type: 'string'},
-                hashed_password: {type: 'string'},
+                password: {type: 'string'},
                 phone_number: {type: 'string'},
                 name: {type: 'string'},
                 family_name: {type: 'string'},

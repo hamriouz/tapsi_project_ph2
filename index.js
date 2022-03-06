@@ -20,8 +20,7 @@ setupDb();
 const app = express();
 app.use(express.json());
 
-// let haveAdmin = false;
-
+// TODO CHECK
 
 app.post('/roomManagement/SignUpAdmin/Admin', async (req, res) => {
     const {name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour} = req.body;
