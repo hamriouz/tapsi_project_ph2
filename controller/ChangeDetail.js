@@ -84,7 +84,7 @@ class ChangeDetail {
     static async changeStateByAdmin(emailAddress) {
         let enOrDis;
         let employeeStatus = await User.query().select('status').where('email','=',emailAddress)
-        // TODO test!
+        // TODO test status
         if (employeeStatus['status'] === "enable") {
             await User.query()
                 .where("email", '=', emailAddress)

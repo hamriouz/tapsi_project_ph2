@@ -22,7 +22,7 @@ app.use(express.json());
 
 // TODO CHECK
 
-app.post('/roomManagement/SignUpAdmin/Admin', async (req, res) => {
+app.post('/RoomManagement/SignUpAdmin/Admin', async (req, res) => {
     const {name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour} = req.body;
     try {
         ActionException.signUpAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour)
@@ -34,10 +34,11 @@ app.post('/roomManagement/SignUpAdmin/Admin', async (req, res) => {
     }
 })
 
-app.post('/roomManagement/SignUpEmployee/Admin', async (req, res) =>{
+app.post('/RoomManagement/SignUpEmployee/Admin', async (req, res) =>{
     const {name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status} = req.body;
     try {
         ActionException.signUpEmployee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status);
+        // TODO test for role!
         const role = await User.query().select("role").where('email', '=', Token.authenticateActor(req.header('Authorization')));
         actionTakerValidation.validateAdmin(role);
         await Registration.createEmployeeByAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status);
@@ -47,7 +48,7 @@ app.post('/roomManagement/SignUpEmployee/Admin', async (req, res) =>{
     }
 })
 
-app.post('/roomManagement/Login/Admin', async (req, res) => {
+app.post('/RoomManagement/Login/Admin', async (req, res) => {
     const {email, password} = req.body;
     try {
         ActionException.login(email, password);
@@ -59,7 +60,7 @@ app.post('/roomManagement/Login/Admin', async (req, res) => {
     }
 })
 
-app.post('/roomManagement/Login/Employee', async (req, res) =>{
+app.post('/RoomManagement/Login/Employee', async (req, res) =>{
     const { email, password } = req.body;
     try {
         ActionException.login(email, password);
@@ -71,8 +72,9 @@ app.post('/roomManagement/Login/Employee', async (req, res) =>{
     }
 })
 
-app.post('/roomManagement/ViewListOfEmployees/Admin', async (req, res) =>{
+app.post('/RoomManagement/ViewListOfEmployees/Admin', async (req, res) =>{
     try {
+        // TODO role test!
         const role = await User.query().select("role").where("email", "=",Token.authenticateActor(req.header('Authorization')));
         actionTakerValidation.validateAdmin(role);
         res.status(201).send(SeeDetail.viewListEmployeeByAdmin());
@@ -81,7 +83,7 @@ app.post('/roomManagement/ViewListOfEmployees/Admin', async (req, res) =>{
     }
 })
 
-app.post('/roomManagement/EnableDisableEmployee/Admin', async (req, res) =>{
+app.post('/RoomManagement/EnableDisableEmployee/Admin', async (req, res) =>{
     const {email} = req.body;
     try {
         ActionException.emptyEmail(email);
@@ -94,7 +96,7 @@ app.post('/roomManagement/EnableDisableEmployee/Admin', async (req, res) =>{
     }
 })
 
-app.post('/roomManagement/ViewEmployee/Admin', async (req, res) =>{
+app.post('/RoomManagement/ViewEmployee/Admin', async (req, res) =>{
     const { email } = req.body;
     try{
         ActionException.emptyEmail(email);
@@ -106,7 +108,7 @@ app.post('/roomManagement/ViewEmployee/Admin', async (req, res) =>{
     }
 })
 
-app.post('/roomManagement/EditEmployee/Admin', async (req, res) =>{
+app.post('/RoomManagement/EditEmployee/Admin', async (req, res) =>{
     const { name, familyName, email, department, organizationLevel, office, workingHour, role, status } = req.body;
     try {
         const userRequest = await User.query().select("*").where('email','=',Token.authenticateActor(req.header('Authorization')))
@@ -118,7 +120,7 @@ app.post('/roomManagement/EditEmployee/Admin', async (req, res) =>{
     }
 })
 
-app.post('/roomManagement/EditEmployee/Employee', async (req, res) =>{
+app.post('/RoomManagement/EditEmployee/Employee', async (req, res) =>{
     const { name, familyName, workingHour } = req.body;
     try {
         const employee = await User.query().select('*').where("email",'=',Token.authenticateActor(req.header('Authorization')));
@@ -130,7 +132,7 @@ app.post('/roomManagement/EditEmployee/Employee', async (req, res) =>{
     }
 })
 
-app.post('/roomManagement/SeeAllEmployeeDepartment/Employee', async (req, res) =>{
+app.post('/RoomManagement/SeeAllEmployeeDepartment/Employee', async (req, res) =>{
     const { department } = req.body;
     try {
         ActionException.emptyDepartment(department);
@@ -142,7 +144,7 @@ app.post('/roomManagement/SeeAllEmployeeDepartment/Employee', async (req, res) =
     }
 })
 
-app.post('/roomManagement/SeeWorkingHour/Employee',async (req, res) =>{
+app.post('/RoomManagement/SeeWorkingHour/Employee',async (req, res) =>{
     const { email } = req.body;
     try {
         ActionException.emptyEmail(email);
