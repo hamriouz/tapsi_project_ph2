@@ -26,7 +26,7 @@ app.post('/RoomManagement/SignUpAdmin/Admin', async (req, res) => {
     const {name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour} = req.body;
     try {
         ActionException.signUpAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour)
-        const user = await User.query().select('*').where('role', '=', "admin");
+        const user = await Admin.query().select('*').where('role', '=', "admin");
         await CreateAdmin.createAdmin(user, name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour);
         res.status(201).send("Admin was successfully created!");
     }catch (err){
@@ -39,7 +39,7 @@ app.post('/RoomManagement/SignUpEmployee/Admin', async (req, res) =>{
     try {
         ActionException.signUpEmployee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status);
         // TODO test for role!
-        const role = await User.query().select("role").where('email', '=', Token.authenticateActor(req.header('Authorization')));
+        const role = await Admin.query().select("role").where('email', '=', Token.authenticateActor(req.header('Authorization')));
         actionTakerValidation.validateAdmin(role);
         await Registration.createEmployeeByAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status);
         res.status(201).send("Username with email address \"" + email + "\" was successfully created!");
@@ -53,7 +53,7 @@ app.post('/RoomManagement/Login/Admin', async (req, res) => {
     try {
         ActionException.login(email, password);
         await AdminController.login(email, password);
-        res.header('Authorization', Token.createToken(await User.query().select("*").where("email",'=',email)));
+        res.header('Authorization', Token.createToken(await Admin.query().select("*").where("email",'=',email)));
         res.status(200).send("The admin successfully logged in!");
     } catch (err) {
         res.status(Exception.getStatusByExceptionMessage(err)).send(err);
@@ -75,7 +75,7 @@ app.post('/RoomManagement/Login/Employee', async (req, res) =>{
 app.post('/RoomManagement/ViewListOfEmployees/Admin', async (req, res) =>{
     try {
         // TODO role test!
-        const role = await User.query().select("role").where("email", "=",Token.authenticateActor(req.header('Authorization')));
+        const role = await Admin.query().select("role").where("email", "=",Token.authenticateActor(req.header('Authorization')));
         actionTakerValidation.validateAdmin(role);
         res.status(201).send(SeeDetail.viewListEmployeeByAdmin());
     }catch (err){
@@ -87,7 +87,7 @@ app.post('/RoomManagement/EnableDisableEmployee/Admin', async (req, res) =>{
     const {email} = req.body;
     try {
         ActionException.emptyEmail(email);
-        const userRequest = await User.query().select("*").where("email",'=',Token.authenticateActor(req.header('Authorization')))
+        const userRequest = await Admin.query().select("*").where("email",'=',Token.authenticateActor(req.header('Authorization')))
         actionTakerValidation.validateAdmin(userRequest);
         let EnOrDis = ChangeDetail.changeStateByAdmin(email);
         res.status(200).send("employee with the email address " + email + " was successfully " + EnOrDis);
@@ -100,7 +100,7 @@ app.post('/RoomManagement/ViewEmployee/Admin', async (req, res) =>{
     const { email } = req.body;
     try{
         ActionException.emptyEmail(email);
-        const userRequest = await User.query().select("*").where("email",'=',Token.authenticateActor(req.header('Authorization')))
+        const userRequest = await Admin.query().select("*").where("email",'=',Token.authenticateActor(req.header('Authorization')))
         actionTakerValidation.validateAdmin(userRequest);
         res.status(200).send(SeeDetail.viewDetailOneEmployeeByAdmin(email));
     }catch (err){
@@ -111,7 +111,7 @@ app.post('/RoomManagement/ViewEmployee/Admin', async (req, res) =>{
 app.post('/RoomManagement/EditEmployee/Admin', async (req, res) =>{
     const { name, familyName, email, department, organizationLevel, office, workingHour, role, status } = req.body;
     try {
-        const userRequest = await User.query().select("*").where('email','=',Token.authenticateActor(req.header('Authorization')))
+        const userRequest = await Admin.query().select("*").where('email','=',Token.authenticateActor(req.header('Authorization')))
         actionTakerValidation.validateAdmin(userRequest);
         await ChangeDetail.changeDetailByAdmin(name, familyName,email, department, organizationLevel, office, workingHour, role, status);
         res.status(200).send("The user's detail(s) was successfully edited")
