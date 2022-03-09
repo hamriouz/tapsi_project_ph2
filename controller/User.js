@@ -1,18 +1,19 @@
 const bcrypt = require("bcryptjs");
-const Token = require("../Token");
-const UserModel = require('../db/models/User');
+const DataBaseManager = require('../db/db-manager/DataBaseManager')
 
 class User {
 
     static async login(email, password) {
-        const user = await UserModel.query().select('*').where('email', '=', email);
-        const encryptedPassword = await UserModel.query().select("password").where("email", '=', email);
-        const userStatus = await UserModel.query().select("status").where("email", '=', email);
-        if (user && bcrypt.compare(password, encryptedPassword)) {
-            if (userStatus.toString() === "enable")
-                throw "Your account was disabled! You don't have the permission to log in!"
-            // user.token = Token.createToken(user, email)
-            Token.createToken(user, email)
+        const user = await DataBaseManager.getUserByEmail(email)
+        if (user) {
+            const encryptedPassword = await DataBaseManager.getPassword(email)
+            const userStatus = await DataBaseManager.getStatus(email)
+            if (user && bcrypt.compare(password, encryptedPassword)) {
+                if (userStatus.toString() === "enable")
+                    throw "Your account was disabled! You don't have the permission to log in!"
+            } else
+                throw "Invalid Credentials!"
+
         } else
             throw "Invalid Credentials!"
     }

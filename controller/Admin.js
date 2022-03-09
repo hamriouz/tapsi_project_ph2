@@ -1,20 +1,19 @@
 const bcrypt = require("bcryptjs");
-const Token = require("../Token");
 const User = require("./User")
-
+const DataBaseManager = require("../db/db-manager/DataBaseManager")
 
 
 class Admin extends User {
 
     static async login(email, password) {
-        const user = await User.query().select('*').where('email', '=', email);
-        // TODO TEST!
-        const encryptedPassword = await User.query().select("password").where("email", '=',email)
+        const user = DataBaseManager.getUserByEmail(email)
+        if (user) {
+            const encryptedPassword = DataBaseManager.getPassword(email)
+            if (!(bcrypt.compare(password, encryptedPassword)))
+                throw "Invalid Credentials!"
+        }
+        else throw "Invalid Credentials!"
 
-        if (user && bcrypt.compare(password, encryptedPassword)) {
-            Token.createToken(user, email)
-        } else
-            throw "Invalid Credentials!"
     }
 }
 

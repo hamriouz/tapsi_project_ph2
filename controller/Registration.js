@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const User = require("../db/models/User");
+const DataBaseManager = require("../db/db-manager/DataBaseManager")
 
 class Registration {
 
@@ -13,20 +14,7 @@ class Registration {
             throw "Your password should be at least 10 characters including alphabetic and numeric.";
 
         let encryptedPassword = bcrypt.hash(password, 10);
-
-        await User.query().insert({
-            role: role,
-            email: email,
-            password: encryptedPassword,
-            phone_number: phoneNumber,
-            name: name,
-            family_name: familyName,
-            department: department,
-            organization_level: organizationLevel,
-            office: office,
-            working_hour: workingHour,
-            status: status,
-        })
+        await DataBaseManager.addEmployee(role, email, encryptedPassword, phoneNumber, familyName, department, organizationLevel, office, workingHour, status)
     }
 }
 

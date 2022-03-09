@@ -26,6 +26,9 @@ class Exception {
             case
             "Your account was disabled! You don't have the permission to take this action!"
             :
+            case
+            "Your role was changed! Logout and login again"
+            :
                 return 401;
             case
             "Employee with the given Email Address doesn't exist!"

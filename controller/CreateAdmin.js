@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
-const Admin = require("../db/models/Admin");
+const DataBaseManager = require("../db/db-manager/DataBaseManager")
+// const Admin = require("../db/models/Admin");
 class CreateAdmin {
     static async createAdmin(user, name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
         if (user)
@@ -9,20 +10,7 @@ class CreateAdmin {
             throw "Your password should be at least 10 characters including alphabetic and numeric.";
 
         let encryptedPassword = bcrypt.hash(password, 10);
-
-        await Admin.query().insert({
-            role: "admin",
-            email: email,
-            password: encryptedPassword,
-            phone_number: phoneNumber,
-            name: name,
-            family_name: familyName,
-            department: department,
-            organization_level: organizationLevel,
-            office: office,
-            working_hour: workingHour,
-            status: "enable",
-        })
+        await DataBaseManager.addAdmin(email, encryptedPassword, phoneNumber, name, familyName, department, organizationLevel, office, workingHour)
     }
 }
 
