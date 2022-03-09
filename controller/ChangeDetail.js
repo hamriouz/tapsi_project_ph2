@@ -42,6 +42,7 @@ class ChangeDetail {
         }
         return enOrDis;
     }
+
 }
 
 module.exports = ChangeDetail;
