@@ -17,8 +17,6 @@ setupDb();
 const app = express();
 app.use(express.json());
 
-// TODO CHECK
-
 app.post('/RoomManagement/SignUpAdmin/Admin', async (req, res) => {
     const {name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour} = req.body;
     try {
@@ -31,12 +29,12 @@ app.post('/RoomManagement/SignUpAdmin/Admin', async (req, res) => {
     }
 })
 
-app.post('/RoomManagement/SignUpEmployee/Admin', async (req, res) =>{
+app.post('/RoomManagement/SignUpEmployee/Admin', Token.authenticateActor, actionTakerValidation.validateAdmin, async (req, res) =>{
     const {name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status} = req.body;
     try {
         ActionException.signUpEmployee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status);
-        const token = req.header('Authorization')
-        actionTakerValidation.validateAdmin(Token.authenticateActor(token), Token.getLoggedInUserRole(token));
+        /*const token = req.header('Authorization')
+        actionTakerValidation.validateAdmin(Token.authenticateActor(token), Token.getLoggedInUserRole(token));*/
         await Registration.createEmployeeByAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status);
         res.status(201).send("Username with email address \"" + email + "\" was successfully created!");
     }catch (err){
@@ -68,22 +66,22 @@ app.post('/RoomManagement/Login/Employee', async (req, res) =>{
     }
 })
 
-app.post('/RoomManagement/ViewListOfEmployees/Admin', async (req, res) =>{
+app.post('/RoomManagement/ViewListOfEmployees/Admin', Token.authenticateActor, actionTakerValidation.validateAdmin,async (req, res) =>{
     try {
-        const token = req.header('Authorization')
-        actionTakerValidation.validateAdmin(Token.authenticateActor(token), Token.getLoggedInUserRole(token));
+       /* const token = req.header('Authorization')
+        actionTakerValidation.validateAdmin(Token.authenticateActor(token), Token.getLoggedInUserRole(token));*/
         res.status(201).send(SeeDetail.viewListEmployeeByAdmin());
     }catch (err){
         res.status(Exception.getStatusByExceptionMessage(err)).send(err);
     }
 })
 
-app.post('/RoomManagement/EnableDisableEmployee/Admin', async (req, res) =>{
+app.post('/RoomManagement/EnableDisableEmployee/Admin', Token.authenticateActor, actionTakerValidation.validateAdmin,async (req, res) =>{
     const {email} = req.body;
     try {
         ActionException.emptyEmail(email);
-        const token = req.header('Authorization')
-        actionTakerValidation.validateAdmin(Token.authenticateActor(token), Token.getLoggedInUserRole(token));
+/*        const token = req.header('Authorization')
+        actionTakerValidation.validateAdmin(Token.authenticateActor(token), Token.getLoggedInUserRole(token));*/
         let EnOrDis = ChangeDetail.changeStateByAdmin(email);
         res.status(200).send("employee with the email address " + email + " was successfully " + EnOrDis);
     }catch (err){
@@ -91,23 +89,23 @@ app.post('/RoomManagement/EnableDisableEmployee/Admin', async (req, res) =>{
     }
 })
 
-app.post('/RoomManagement/ViewEmployee/Admin', async (req, res) =>{
+app.post('/RoomManagement/ViewEmployee/Admin', Token.authenticateActor, actionTakerValidation.validateAdmin,async (req, res) =>{
     const { email } = req.body;
     try{
         ActionException.emptyEmail(email);
-        const token = req.header('Authorization')
-        actionTakerValidation.validateAdmin(Token.authenticateActor(token), Token.getLoggedInUserRole(token));
+/*        const token = req.header('Authorization')
+        actionTakerValidation.validateAdmin(Token.authenticateActor(token), Token.getLoggedInUserRole(token));*/
         res.status(200).send(SeeDetail.viewDetailOneEmployeeByAdmin(email));
     }catch (err){
         res.status(Exception.getStatusByExceptionMessage(err)).send(err);
     }
 })
 
-app.post('/RoomManagement/EditEmployee/Admin', async (req, res) =>{
+app.post('/RoomManagement/EditEmployee/Admin', Token.authenticateActor, actionTakerValidation.validateAdmin,async (req, res) =>{
     const { name, familyName, email, department, organizationLevel, office, workingHour, role, status } = req.body;
     try {
-        const token = req.header('Authorization')
-        actionTakerValidation.validateAdmin(Token.authenticateActor(token), Token.getLoggedInUserRole(token));
+/*        const token = req.header('Authorization')
+        actionTakerValidation.validateAdmin(Token.authenticateActor(token), Token.getLoggedInUserRole(token));*/
         await ChangeDetail.changeDetailByAdmin(name, familyName,email, department, organizationLevel, office, workingHour, role, status);
         res.status(200).send("The user's detail(s) was successfully edited")
     }catch (err){
@@ -115,11 +113,11 @@ app.post('/RoomManagement/EditEmployee/Admin', async (req, res) =>{
     }
 })
 
-app.post('/RoomManagement/EditEmployee/Employee', async (req, res) =>{
+app.post('/RoomManagement/EditEmployee/Employee', Token.authenticateActor, actionTakerValidation.validateEmployee, async (req, res) =>{
     const { name, familyName, workingHour } = req.body;
     try {
-        const token = req.header('Authorization')
-        actionTakerValidation.validateEmployee(Token.authenticateActor(token), Token.getLoggedInUserRole(token));
+/*        const token = req.header('Authorization')
+        actionTakerValidation.validateEmployee(Token.authenticateActor(token), Token.getLoggedInUserRole(token));*/
         await ChangeDetail.changeDetailByEmployee(Token.authenticateActor(req.header('Authorization')), name, familyName, workingHour);
         res.status(200).send("The employee's detail(s) was changed successfully!")
     }catch (err){
@@ -127,24 +125,24 @@ app.post('/RoomManagement/EditEmployee/Employee', async (req, res) =>{
     }
 })
 
-app.post('/RoomManagement/SeeAllEmployeeDepartment/Employee', async (req, res) =>{
+app.post('/RoomManagement/SeeAllEmployeeDepartment/Employee',Token.authenticateActor, actionTakerValidation.validateEmployee,  async (req, res) =>{
     const { department } = req.body;
     try {
         ActionException.emptyDepartment(department);
-        const token = req.header('Authorization')
-        actionTakerValidation.validateEmployee(Token.authenticateActor(token), Token.getLoggedInUserRole(token));
+/*        const token = req.header('Authorization')
+        actionTakerValidation.validateEmployee(Token.authenticateActor(token), Token.getLoggedInUserRole(token));*/
         res.status(200).send(SeeDetail.getAllEmployeeDepartmentByEmployee(department))
     }catch (err){
         res.status(Exception.getStatusByExceptionMessage(err)).send(err);
     }
 })
 
-app.post('/RoomManagement/SeeWorkingHour/Employee',async (req, res) =>{
+app.post('/RoomManagement/SeeWorkingHour/Employee',Token.authenticateActor, actionTakerValidation.validateEmployee,async (req, res) =>{
     const { email } = req.body;
     try {
         ActionException.emptyEmail(email);
-        const token = req.header('Authorization')
-        actionTakerValidation.validateEmployee(Token.authenticateActor(token), Token.getLoggedInUserRole(token));
+       /* const token = req.header('Authorization')
+        actionTakerValidation.validateEmployee(Token.authenticateActor(token), Token.getLoggedInUserRole(token));*/
         res.status(200).send(SeeDetail.workingHourByEmployee(email))
     }catch (err){
         res.status(Exception.getStatusByExceptionMessage(err)).send(err);
