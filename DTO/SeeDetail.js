@@ -1,4 +1,4 @@
-const DataBaseManager = require("../db/db-manager/DataBaseManager")
+const DataBaseManager = require("../DataAccess/DataBaseManager")
 
 class SeeDetail {
     static viewListEmployeeByAdmin() {

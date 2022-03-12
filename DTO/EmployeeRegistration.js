@@ -1,12 +1,10 @@
 const bcrypt = require("bcryptjs");
-const User = require("../db/models/User");
-const DataBaseManager = require("../db/db-manager/DataBaseManager")
+const DataBaseManager = require("../DataAccess/DataBaseManager")
 
 class Registration {
 
-    //todo inja query nazanim
     static async createEmployeeByAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status) {
-        const repetitiveUser = User.query().select('*').where("email", '=', email)
+        const repetitiveUser = DataBaseManager.getUserByEmail(email)
 
         if (repetitiveUser)
             throw "کارمندی با ایمیل وارد شده وجود دارد!"

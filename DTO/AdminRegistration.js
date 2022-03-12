@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const DataBaseManager = require("../db/db-manager/DataBaseManager")
+const DataBaseManager = require("../DataAccess/DataBaseManager")
 // const Admin = require("../db/models/Admin");
 class CreateAdmin {
     static async createAdmin(user, name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {

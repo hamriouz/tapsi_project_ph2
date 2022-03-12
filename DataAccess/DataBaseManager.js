@@ -1,5 +1,5 @@
-const Admin = require("../models/Admin");
-const User = require("../models/User")
+const Admin = require("../db/models/Admin");
+const User = require("../db/models/User")
 
 class DataBaseManager {
     static async getAdmin() {

@@ -1,4 +1,4 @@
-class ActionException{
+class UndefinedException{
     static signUpAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour){
         if (!(name && familyName && email && password && phoneNumber && department && organizationLevel && office && workingHour))
             throw ("please fill all the information");
@@ -26,4 +26,4 @@ class ActionException{
     }
 }
 
-module.exports = ActionException;
+module.exports = UndefinedException;
