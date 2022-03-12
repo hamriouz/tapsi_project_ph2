@@ -1,11 +1,17 @@
-const bcrypt = require("bcryptjs");
 const User = require("./User")
-const DataBaseManager = require("../db/db-manager/DataBaseManager")
+const UserDomain = require("../Domain/User");
 
 
 class Admin extends User {
 
     static async login(email, password) {
+        let userDomain = new UserDomain(email);
+        await userDomain.login(password);
+    }}
+
+module.exports = Admin;
+
+/*    static async login(email, password) {
         const user = DataBaseManager.getUserByEmail(email)
         if (user) {
             const encryptedPassword = DataBaseManager.getPassword(email)
@@ -14,7 +20,4 @@ class Admin extends User {
         }
         else throw "Invalid Credentials!"
 
-    }
-}
-
-module.exports = Admin;
+    }*/

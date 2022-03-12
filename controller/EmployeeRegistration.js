@@ -4,6 +4,7 @@ const DataBaseManager = require("../db/db-manager/DataBaseManager")
 
 class Registration {
 
+    //todo inja query nazanim
     static async createEmployeeByAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status) {
         const repetitiveUser = User.query().select('*').where("email", '=', email)
 

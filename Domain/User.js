@@ -1,4 +1,5 @@
 const UserModel = require('../db/models/User');
+const DataBaseManager = require('../db/db-manager/DataBaseManager')
 const Token = require("../Token");
 
 class UserDomain {
@@ -8,11 +9,11 @@ class UserDomain {
     async login(password) {
 
         await this.load();
-        if (bcrypt.compare(password, encryptedPassword)) {
-            if (userStatus.toString() === "enable")
+        if (bcrypt.compare(password, this.encryptedPassword)) {
+            if (DataBaseManager.getStatus(this.email) !== "enable")
                 throw "Your account was disabled! You don't have the permission to log in!"
             // user.token = Token.createToken(user, email)
-            Token.createToken(user, email)
+            // Token.createToken(this.email, DataBaseManager.getRole(this.email))
         } else
             throw "Invalid Credentials!"
     }
@@ -21,7 +22,8 @@ class UserDomain {
         this.encryptedPassword = user.encryptedPassword;
     }
     async load() {
-        const userDetail = await UserModel.query().select('*').where('email', '=', email);
+        const userDetail = await DataBaseManager.getUserByEmail(email)
+        // const userDetail = await UserModel.query().select('*').where('email', '=', email);
         if (userDetail) {
             this.setUser(userDetail);
         }
