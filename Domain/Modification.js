@@ -2,7 +2,6 @@ const DataBaseManager = require("../DataAccess/DataBaseManager")
 
 class ChangeDetail {
 
-    // TODO get the user and edit the object right away
     static async changeDetailByEmployee(email, name, familyName, workingHour) {
         if (name)
             await DataBaseManager.changeName(name, email)
