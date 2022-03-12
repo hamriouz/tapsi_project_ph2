@@ -1,6 +1,5 @@
 const DataBaseManager = require('../DataAccess/DataBaseManager')
-// const UserModel = require('../db/models/User');
-// const Token = require("../Token");
+const bcrypt = require("bcryptjs");
 
 class UserDomain {
     constructor(email) {
@@ -12,8 +11,6 @@ class UserDomain {
         if (bcrypt.compare(password, this.encryptedPassword)) {
             if (DataBaseManager.getStatus(this.email) !== "enable")
                 throw "Your account was disabled! You don't have the permission to log in!"
-            // user.token = Token.createToken(user, email)
-            // Token.createToken(this.email, DataBaseManager.getRole(this.email))
         } else
             throw "Invalid Credentials!"
     }
@@ -30,6 +27,37 @@ class UserDomain {
         }
     }
 
+    async createAdmin(user, name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
+        if (user)
+            throw "Admin has already been created";
+
+        if (!checkPassword(password))
+            throw "Your password should be at least 10 characters including alphabetic and numeric.";
+
+        let encryptedPassword = bcrypt.hash(password, 10);
+        await DataBaseManager.addAdmin(email, encryptedPassword, phoneNumber, name, familyName, department, organizationLevel, office, workingHour)
+
+    }
+
+    async registerEmployee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status) {
+        const repetitiveUser = DataBaseManager.getUserByEmail(email)
+
+        if (repetitiveUser)
+            throw "کارمندی با ایمیل وارد شده وجود دارد!"
+
+        if (!checkPassword(password))
+            throw "Your password should be at least 10 characters including alphabetic and numeric.";
+
+        let encryptedPassword = bcrypt.hash(password, 10);
+        await DataBaseManager.addEmployee(role, email, encryptedPassword, phoneNumber, familyName, department, organizationLevel, office, workingHour, status)
+
+    }
+
+}
+
+function checkPassword(givenPassword){
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{10,}$/;
+    return passwordRegex.test(givenPassword);
 }
 
 module.exports = UserDomain
