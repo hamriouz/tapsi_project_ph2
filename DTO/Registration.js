@@ -1,4 +1,5 @@
 const UserDomain = require("../Domain/User");
+const DataBaseManager = require("../DataAccess/UserDataAccess");
 
 class Registration {
 
@@ -11,8 +12,10 @@ class Registration {
         }
     }
 
-    static async createAdmin(user, name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
+    static async createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
         try {
+            // TODO It shouldn't be able to have access to database! change this part
+            const user = DataBaseManager.getAdmin();
             let userDomain = new UserDomain(email);
             await userDomain.createAdmin(user, name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour);
         }catch (e){

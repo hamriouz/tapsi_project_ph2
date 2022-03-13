@@ -1,9 +1,8 @@
-const Admin = require("../db/models/Admin");
 const User = require("../db/models/User")
 
 class UserDataAccess {
     static async getAdmin() {
-        return Admin.query().select('*').where('role', '=', "admin");
+        return User.query().select('*').where('role', '=', "admin");
     }
 
     static async getUserByEmail(email) {
@@ -24,7 +23,7 @@ class UserDataAccess {
     }
 
     static async addAdmin(email, encryptedPassword, phoneNumber, name, familyName, department, organizationLevel, office, workingHour) {
-        await Admin.query().insert({
+        await User.query().insert({
             role: "admin",
             email: email,
             password: encryptedPassword,
