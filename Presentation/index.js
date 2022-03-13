@@ -4,10 +4,10 @@ const Exception = require("../DTO/Exception")
 const UserController = require('../DTO/User');
 const AdminController = require('../DTO/Admin');
 const SeeDetail = require('../Domain/SeeDetail')
-const Token = require("../Token");
+const Token = require("../AccessManager/Token");
 const ChangeDetail = require("../Domain/Modification")
 const Registration = require("../DTO/Registration")
-const accessManager = require("../validations/AccessManager");
+const accessManager = require("../AccessManager/AccessManager");
 const undefinedException = require("../DTO/UndefinedException");
 const DataBaseManager = require("../DataAccess/UserDataAccess")
 
