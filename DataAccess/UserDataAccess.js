@@ -1,7 +1,7 @@
 const Admin = require("../db/models/Admin");
 const User = require("../db/models/User")
 
-class DataBaseManager {
+class UserDataAccess {
     static async getAdmin() {
         return Admin.query().select('*').where('role', '=', "admin");
     }
@@ -95,7 +95,7 @@ class DataBaseManager {
     static async changeName(name, email) {
         await User.query()
             .where("email", '=', email)
-            .patch({
+            .update({
                 name: name
             });
     }
@@ -103,7 +103,7 @@ class DataBaseManager {
     static async changeFamilyName(familyName, email) {
         await User.query()
             .where("email", '=', email)
-            .patch({
+            .update({
                 family_name: familyName
             });
     }
@@ -111,7 +111,7 @@ class DataBaseManager {
     static async changeDepartment(department, email) {
         await User.query()
             .where("email", '=', email)
-            .patch({
+            .update({
                 department: department
             });
     }
@@ -119,7 +119,7 @@ class DataBaseManager {
     static async changeOrganizationLevel(organizationLevel, email) {
         await User.query()
             .where("email", '=', email)
-            .patch({
+            .update({
                 organization_level: organizationLevel
             });
     }
@@ -127,7 +127,7 @@ class DataBaseManager {
     static async changeOffice(office, email) {
         await User.query()
             .where("email", '=', email)
-            .patch({
+            .update({
                 office: office
             });
     }
@@ -135,7 +135,7 @@ class DataBaseManager {
     static async changeWorkingHour(workingHour, email) {
         await User.query()
             .where("email", '=', email)
-            .patch({
+            .update({
                 working_hour: workingHour
             });
     }
@@ -143,7 +143,7 @@ class DataBaseManager {
     static async changeRole(role, email) {
         await User.query()
             .where("email", '=', email)
-            .patch({
+            .update({
                 role: role
             });
     }
@@ -151,7 +151,7 @@ class DataBaseManager {
     static async changeStatus(status, email) {
         await User.query()
             .where("email", '=', email)
-            .patch({
+            .update({
                 status: status
             });
     }
@@ -159,7 +159,7 @@ class DataBaseManager {
     static async enable(email) {
         await User.query()
             .where("email", '=', email)
-            .patch({
+            .update({
                 status: 'enable'
             });
     }
@@ -167,10 +167,10 @@ class DataBaseManager {
     static async disable(email) {
         await User.query()
             .where("email", '=', email)
-            .patch({
+            .update({
                 status: 'disable'
             });
     }
 }
 
-module.exports = DataBaseManager
+module.exports = UserDataAccess

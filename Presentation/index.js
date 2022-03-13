@@ -6,11 +6,11 @@ const AdminController = require('../DTO/Admin');
 const SeeDetail = require('../Domain/SeeDetail')
 const Token = require("../Token");
 const ChangeDetail = require("../Domain/Modification")
-const {Registration} = require("../DTO/EmployeeRegistration")
-const CreateAdmin = require("../DTO/AdminRegistration")
+const Registration = require("../DTO/Registration")
+// const CreateAdmin = require("../DTO/AdminRegistration")
 const accessManager = require("../validations/AccessManager");
 const undefinedException = require("../DTO/UndefinedException");
-const DataBaseManager = require("../DataAccess/DataBaseManager")
+const DataBaseManager = require("../DataAccess/UserDataAccess")
 
 setupDb();
 
@@ -23,7 +23,7 @@ app.post('/RoomManagement/SignUpAdmin/Admin', async (req, res) => {
     try {
         undefinedException.signUpAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour)
         const user = DataBaseManager.getAdmin();
-        await CreateAdmin.createAdmin(user, name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour);
+        await Registration.createAdmin(user, name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour);
         res.status(201).send("Admin was successfully created!");
     }catch (err){
         res.status(Exception.getStatusByExceptionMessage(err)).send(err);
