@@ -18,10 +18,6 @@ const app = express();
 app.use(express.json());
 
 
-//todo add the getUser in the modification class and set the new detail for it
-// age exception marboot be user darim bere to dto
-
-
 app.post('/RoomManagement/SignUpAdmin/Admin', async (req, res) => {
     const {name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour} = req.body;
     try {
