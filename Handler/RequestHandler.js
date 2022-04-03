@@ -27,13 +27,12 @@ class RequestHandler {
         if (!(email && password))
             throw "please fill all the information";
         try {
-            //todo
-
-        //     if (role === admin){}
-        //     else {}
-        // } catch (err) {
-        //     throw err
-        }catch (err){
+            const user = Employee.getEmployeeByEmail(email);
+            if (user[0].status === "admin") {
+                Admin.login(email, password)
+            } else Employee.login(email, password);
+        }
+        catch (err){
             throw err;
         }
     }

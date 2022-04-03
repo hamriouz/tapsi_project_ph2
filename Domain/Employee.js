@@ -32,7 +32,14 @@ class Employee{
         return new Employee(employee[0].name, employee[0].familyName, email, employee[0].password, employee[0].department, employee[0].organizationLevel, employee[0].office, employee[0].workingHour);
     }
 
-    static login(){}
+    static login(email, password){
+        const employee = this.getEmployeeByEmail(email);
+        if (bcrypt.compare(password, employee[0].password)){
+            if (employee[0].status !== "enable")
+                throw "Your account was disabled! You don't have the permission to log in!"
+        } else
+            throw "Invalid Credentials!"
+    }
 
     async editEmployee(name, familyName, workingHour){
         if (name) {

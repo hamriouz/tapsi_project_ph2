@@ -16,8 +16,13 @@ class Admin extends Employee {
         return new Admin(admin[0].name, admin[0].familyName, email, admin[0].password, admin[0].department, admin[0].organizationLevel, admin[0].office, admin[0].workingHour);
     }
 
-    static login() {
-
+    static login(email, password) {
+        const admin = this.getAdminByEmail(email);
+        if (bcrypt.compare(password, admin[0].password)){
+            if (admin[0].status !== "enable")
+                throw "Your account was disabled! You don't have the permission to log in!"
+        } else
+            throw "Invalid Credentials!"
     }
 
     static async createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
