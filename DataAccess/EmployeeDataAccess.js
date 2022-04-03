@@ -1,6 +1,6 @@
-const User = require("../db/models/User")
+const User = require("./db/models/User")
 
-class UserDataAccess {
+class EmployeeDataAccess {
     static async getAdmin() {
         return User.query().select('*').where('role', '=', "admin");
     }
@@ -172,4 +172,4 @@ class UserDataAccess {
     }
 }
 
-module.exports = UserDataAccess
+module.exports = EmployeeDataAccess

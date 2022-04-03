@@ -1,10 +1,12 @@
-const DataBaseManager = require('../DataAccess/UserDataAccess')
+const DataBaseManager = require('../../DataAccess/EmployeeDataAccess')
 const bcrypt = require("bcryptjs");
 
 class UserDomain {
     constructor(email) {
         this.email = email;
     }
+
+
 
     async login(password) {
         await this.load();
