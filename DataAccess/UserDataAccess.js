@@ -1,6 +1,6 @@
 const User = require("./db/models/User")
 
-class DataAccess {
+class UserDataAccess {
     static async getAdmin() {
         return User.query().select('*').where('role', '=', "admin");
     }
@@ -180,4 +180,4 @@ class DataAccess {
     }
 }
 
-module.exports = DataAccess
+module.exports = UserDataAccess

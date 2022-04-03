@@ -1,4 +1,4 @@
-const DataBaseManager = require('../../DataAccess/DataAccess')
+const DataBaseManager = require('../../DataAccess/UserDataAccess')
 const ApiGroups = require('./ApiGroups');
 
 
