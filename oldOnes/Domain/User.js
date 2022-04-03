@@ -29,7 +29,7 @@ class UserDomain {
         }
     }
 
-    async createAdmin(user, name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
+/*    async createAdmin(user, name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
         if (user)
             throw "Admin has already been created";
 
@@ -53,7 +53,7 @@ class UserDomain {
         let encryptedPassword = bcrypt.hash(password, 10);
         await DataBaseManager.addEmployee(role, email, encryptedPassword, phoneNumber, familyName, department, organizationLevel, office, workingHour, status)
 
-    }
+    }*/
 
 }
 

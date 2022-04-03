@@ -1,5 +1,6 @@
 const DataBaseManager = require("../DataAccess/EmployeeDataAccess");
 const Employee = require('./Employee');
+const bcrypt = require("bcryptjs");
 
 class Admin extends Employee {
     constructor() {
@@ -24,7 +25,9 @@ class Admin extends Employee {
         if (admin)
             throw "Admin has already been created";
 
-        //todo check password
+        if (!checkPassword(password))
+            throw "Your password should be at least 10 characters including alphabetic and numeric.";
+
         let encryptedPassword = bcrypt.hash(password, 10);
         new Admin(name, familyName, email, encryptedPassword, phoneNumber, department, organizationLevel, office, workingHour);
 
@@ -33,9 +36,13 @@ class Admin extends Employee {
     async registerEmployee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status) {
         let employee = await Employee.getEmployeeByEmail(email);
         if (!employee)
-            throw ""
-        //todo write text and check password
-        new Employee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status)
+            throw "کارمندی با ایمیل وارد شده وجود دارد!"
+
+        if (!checkPassword(password))
+            throw "Your password should be at least 10 characters including alphabetic and numeric.";
+
+        let encryptedPassword = bcrypt.hash(password, 10);
+        new Employee(name, familyName, email, encryptedPassword, phoneNumber, department, organizationLevel, office, workingHour, role, status)
     }
 
     async viewListOfEmployee() {
@@ -98,6 +105,11 @@ class Admin extends Employee {
 
     }
 
+}
+
+function checkPassword(givenPassword){
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{10,}$/;
+    return passwordRegex.test(givenPassword);
 }
 
 module.exports = Admin;
