@@ -97,6 +97,17 @@ class RequestHandler {
         }
     }
 
+    async getAllEmployeesInAnOffice(requestEmail, office){
+        if (!office)
+            throw ("please fill all the information");
+        try{
+            const employee = await Employee.getEmployeeByEmail(requestEmail);
+            return await employee.getAllEmployeesOfOffice(office);
+        }catch (err){
+            throw err;
+        }
+    }
+
     async getWorkingHourOfEmployee(requestEmail, email) {
         if (!(email))
             throw ("please fill all the information");

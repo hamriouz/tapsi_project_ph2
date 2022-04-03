@@ -8,7 +8,7 @@ const RequestHandler = require('../Handler/RequestHandler');
 
 setupDb();
 
-const requestHandler = RequestHandler.getInstance();
+const   requestHandler = RequestHandler.getInstance();
 
 const app = express();
 app.use(express.json());
@@ -126,6 +126,16 @@ app.post('/RoomManagement/SeeAllEmployeeDepartment', Token.authenticateActor, ac
     }
 })
 
+app.post('/RoomManagement/SeeAllEmployeeOffice', Token.authenticateActor, accessManager.validateAccess, accessManager.validateChangedDetail, async (req, res) => {
+    const {office} = req.body;
+    try {
+        const allEmployeeInOffice = requestHandler.getAllEmployeesInAnOffice(office);
+        res.status(200).send(allEmployeeInOffice);
+    } catch (err) {
+        res.status(Exception.getStatusByExceptionMessage(err)).send(err);
+    }
+})
+
 app.post('/RoomManagement/SeeWorkingHour', Token.authenticateActor, accessManager.validateAccess, accessManager.validateChangedDetail, async (req, res) => {
     const {email} = req.body;
     try {
@@ -141,16 +151,3 @@ app.listen(2000)
 
 /* const token = req.header('Authorization')
  accessManager.validateEmployee(Token.authenticateActor(token), Token.getLoggedInUserRole(token));*/
-
-
-/*app.post('/RoomManagement/Login/Employee', async (req, res) =>{
-    const { email, password } = req.body;
-    try {
-        // undefinedException.login(email, password);
-        // await UserController.login(email, password);
-        res.header('Authorization', Token.createToken(email, "employee"));
-        res.status(200).send("The employee successfully logged in!");
-    }catch (err){
-        res.status(Exception.getStatusByExceptionMessage(err)).send(err);
-    }
-})*/

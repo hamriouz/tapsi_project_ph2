@@ -1,5 +1,5 @@
 //Testing the return values of the Exception class
-const Exception = require("../../Util/Exception");
+const Exception = require("../Util/Exception");
 test('when exception "please fill all the information" is thrown status should be 400', () => {
     expect(Exception.getStatusByExceptionMessage("please fill all the information")).toBe(400);
 });

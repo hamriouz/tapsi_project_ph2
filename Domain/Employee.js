@@ -1,47 +1,38 @@
-const DataBaseManager = require('../DataAccess/EmployeeDataAccess');
+const DataBaseManager = require('../DataAccess/DataAccess');
 const bcrypt = require("bcryptjs");
 
-class Employee{
+class Employee {
     constructor(name, familyName, email, encryptedPassword, phoneNumber, department, organizationLevel, office, workingHour) {
-    this.name = name;
-    this.familyName = familyName;
-    this.email = email;
-    this.password = encryptedPassword;
-    this.phoneNumber = phoneNumber;
-    this.department = department;
-    this.organizationLevel = organizationLevel;
-    this.office = office;
-    this.workingHour = workingHour;
-    //todo add to db
+        this.name = name;
+        this.familyName = familyName;
+        this.email = email;
+        this.password = encryptedPassword;
+        this.phoneNumber = phoneNumber;
+        this.department = department;
+        this.organizationLevel = organizationLevel;
+        this.office = office;
+        this.workingHour = workingHour;
     }
 
-/*    async static createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour){
-        let admin = DataBaseManager.getAdmin();
-        if (admin)
-            throw "Admin has already been created";
-
-        let encryptedPassword = bcrypt.hash(password, 10);
-
-    }*/
-
-     static async getEmployeeByEmail(email){
+    static async getEmployeeByEmail(email) {
         const employee = await DataBaseManager.getUserByEmail(email);
         if (!employee)
-            throw ""
-        //todo
-        return new Employee(employee[0].name, employee[0].familyName, email, employee[0].password, employee[0].department, employee[0].organizationLevel, employee[0].office, employee[0].workingHour);
+            throw "Only a logged in employee can do this action!"
+        //todo check problem
+        let wantedEmployee =  new Employee(employee[0].name, employee[0].family_name, email, employee[0].password, employee[0].department, employee[0].organization_level, employee[0].office, employee[0].working_hour);
+        return wantedEmployee;
     }
 
-    static login(email, password){
+    static login(email, password) {
         const employee = this.getEmployeeByEmail(email);
-        if (bcrypt.compare(password, employee[0].password)){
+        if (bcrypt.compare(password, employee[0].password)) {
             if (employee[0].status !== "enable")
                 throw "Your account was disabled! You don't have the permission to log in!"
         } else
             throw "Invalid Credentials!"
     }
 
-    async editEmployee(name, familyName, workingHour){
+    async editEmployee(name, familyName, workingHour) {
         if (name) {
             await DataBaseManager.changeName(name, this.email);
             this.name = name;
@@ -56,20 +47,20 @@ class Employee{
         }
     }
 
-    getAllEmployeesOfDepartment(department){
-        return DataBaseManager.allEmployeeDepartment(department);
-
+    async getAllEmployeesOfDepartment(department) {
+        const allInDepartment = await DataBaseManager.allEmployeeDepartment(department);
+        return allInDepartment;
     }
 
-    seeWorkingHour(email){
-        return DataBaseManager.workingHour(email);
+    async getAllEmployeesOfOffice(office){
+        const allInOffice = await DataBaseManager.allEmployeeOffice(office);
+        return allInOffice;
     }
-}
 
-
-function checkPassword(givenPassword){
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{10,}$/;
-    return passwordRegex.test(givenPassword);
+    async seeWorkingHour(email) {
+        const workingHour = await DataBaseManager.workingHour(email);
+        return workingHour;
+    }
 }
 
 module.exports = Employee

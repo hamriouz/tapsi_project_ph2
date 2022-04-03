@@ -1,6 +1,6 @@
 const User = require("./db/models/User")
 
-class EmployeeDataAccess {
+class DataAccess {
     static async getAdmin() {
         return User.query().select('*').where('role', '=', "admin");
     }
@@ -86,8 +86,16 @@ class EmployeeDataAccess {
             .where("department", '=', department)
     }
 
+    static async allEmployeeOffice (office) {
+        return User.query().select(
+            'email',
+            'name',
+            'family_name')
+            .where("office", '=', office)
+    }
+
     static async workingHour(email) {
-        return User.query().select("working_hour").where('email', '=', email);
+        return this.getUserByEmail(email)[0].working_hour;
 
     }
 
@@ -172,4 +180,4 @@ class EmployeeDataAccess {
     }
 }
 
-module.exports = EmployeeDataAccess
+module.exports = DataAccess
