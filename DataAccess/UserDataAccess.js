@@ -9,6 +9,10 @@ class UserDataAccess {
         return User.query().select("*").where('email', '=', email)
     }
 
+    static async getUserByIdentifier(identifier){
+        return User.query().select("*").findById(identifier);
+    }
+
     static getRole(email) {
         return this.getUserByEmail(email)[0].role
 

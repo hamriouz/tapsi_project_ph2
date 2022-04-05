@@ -119,6 +119,15 @@ class RequestHandler {
         }
     }
 
+    async getUserByID(userIdentifier){
+        try {
+            const user = await Employee.getEmployeeByIdentifier(userIdentifier);
+            return user
+        }catch (err){
+            return null;
+        }
+    }
+
 }
 
 

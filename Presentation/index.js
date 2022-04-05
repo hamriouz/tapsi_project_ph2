@@ -8,7 +8,7 @@ const RequestHandler = require('../Handler/RequestHandler');
 
 setupDb();
 
-const   requestHandler = RequestHandler.getInstance();
+const requestHandler = RequestHandler.getInstance();
 
 const app = express();
 app.use(express.json());

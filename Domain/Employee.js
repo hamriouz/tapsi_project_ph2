@@ -1,8 +1,11 @@
 const DataBaseManager = require('../DataAccess/UserDataAccess');
 const bcrypt = require("bcryptjs");
+const e = require("express");
 
 class Employee {
-    constructor(name, familyName, email, encryptedPassword, phoneNumber, department, organizationLevel, office, workingHour) {
+    // constructor(name, familyName, email, encryptedPassword, phoneNumber, department, organizationLevel, office, workingHour) {
+    constructor(userData) {
+        const {name, familyName, email, encryptedPassword, phoneNumber, department, organizationLevel, office, workingHour} = userData
         this.name = name;
         this.familyName = familyName;
         this.email = email;
@@ -18,9 +21,14 @@ class Employee {
         const employee = await DataBaseManager.getUserByEmail(email);
         if (!employee)
             throw "Only a logged in employee can do this action!"
-        //todo check problem
-        let wantedEmployee =  new Employee(employee[0].name, employee[0].family_name, email, employee[0].password, employee[0].department, employee[0].organization_level, employee[0].office, employee[0].working_hour);
-        return wantedEmployee;
+        return new Employee(employee[0]);
+    }
+
+    static async getEmployeeByIdentifier(identifier){
+        const employee = await DataBaseManager.getUserByIdentifier(identifier);
+        if (employee)
+            return new Employee(employee[0])
+        else return null;
     }
 
     static login(email, password) {

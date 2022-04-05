@@ -47,6 +47,7 @@ class Admin extends Employee {
             throw "Your password should be at least 10 characters including alphabetic and numeric.";
 
         let encryptedPassword = bcrypt.hash(password, 10);
+        //todo change the variables given to the constructor into json
         new Employee(name, familyName, email, encryptedPassword, phoneNumber, department, organizationLevel, office, workingHour, role, status);
         await DataBaseManager.addEmployee(role, email, encryptedPassword, phoneNumber, familyName, department, organizationLevel, office, workingHour, status);
     }
