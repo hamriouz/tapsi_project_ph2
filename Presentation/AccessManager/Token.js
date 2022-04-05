@@ -19,6 +19,7 @@ class Token {
         next();
     }
 
+    //todo add id
     static createToken(email, role) {
         return jwt.sign(
             {
