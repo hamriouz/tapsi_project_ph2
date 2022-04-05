@@ -21,13 +21,13 @@ class Employee {
         const employee = await DataBaseManager.getUserByEmail(email);
         if (!employee)
             throw "Only a logged in employee can do this action!"
-        return new Employee(employee[0]);
+        return new Employee(employee[0], employee[0].password);
     }
 
     static async getEmployeeByIdentifier(identifier){
         const employee = await DataBaseManager.getUserByIdentifier(identifier);
         if (employee)
-            return new Employee(employee[0])
+            return new Employee(employee[0], employee[0].password)
         else return null;
     }
 
