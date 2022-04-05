@@ -15,7 +15,7 @@ app.use(express.json());
 
 
 app.post('/RoomManagement/CreateAdmin', async (req, res) => {
-    const {
+/*    const {
         name,
         familyName,
         email,
@@ -25,9 +25,11 @@ app.post('/RoomManagement/CreateAdmin', async (req, res) => {
         organizationLevel,
         office,
         workingHour
-    } = req.body;
+    } = req.body;*/
+    let adminData = req.body;
     try {
-        await requestHandler.createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour);
+        // await requestHandler.createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour);
+        await requestHandler.createAdmin(adminData);
         res.status(201).send("Admin was successfully created!");
     } catch (err) {
         res.status(Exception.getStatusByExceptionMessage(err)).send(err);
@@ -35,7 +37,7 @@ app.post('/RoomManagement/CreateAdmin', async (req, res) => {
 })
 
 app.post('/RoomManagement/SignUpEmployee', Token.authenticateActor, accessManager.validateAccess, accessManager.validateChangedDetail, async (req, res) => {
-    const {
+/*    const {
         name,
         familyName,
         email,
@@ -47,10 +49,12 @@ app.post('/RoomManagement/SignUpEmployee', Token.authenticateActor, accessManage
         workingHour,
         role,
         status
-    } = req.body;
+    } = req.body;*/
+    let employeeData = req.body;
     try {
-        await requestHandler.registerEmployee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status)
-        res.status(201).send("Username with email address \"" + email + "\" was successfully created!");
+        // await requestHandler.registerEmployee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status)
+        await requestHandler.registerEmployee(req.email, employeeData);
+        res.status(201).send("Username with email address \"" + employeeData.email + "\" was successfully created!");
     } catch (err) {
         res.status(Exception.getStatusByExceptionMessage(err)).send(err);
     }
@@ -59,7 +63,7 @@ app.post('/RoomManagement/SignUpEmployee', Token.authenticateActor, accessManage
 app.post('/RoomManagement/Login', async (req, res) => {
     const {email, password} = req.body;
     try {
-        await requestHandler.login(email, password)
+        await requestHandler.login(email, password);
         res.header('Authorization', Token.createToken(email, "admin"));
         res.status(200).send("The admin successfully logged in!");
     } catch (err) {
@@ -79,7 +83,7 @@ app.post('/RoomManagement/ViewListOfEmployees', Token.authenticateActor, accessM
 app.post('/RoomManagement/EnableDisableEmployee', Token.authenticateActor, accessManager.validateAccess, accessManager.validateChangedDetail, async (req, res) => {
     const {email} = req.body;
     try {
-        let enOrDis = requestHandler.enableDisableEmployee(email)
+        let enOrDis = requestHandler.enableDisableEmployee(email);
         res.status(200).send("employee with the email address " + email + " was successfully " + enOrDis);
     } catch (err) {
         res.status(Exception.getStatusByExceptionMessage(err)).send(err);
@@ -97,9 +101,11 @@ app.post('/RoomManagement/ViewEmployee', Token.authenticateActor, accessManager.
 })
 
 app.post('/RoomManagement/EditEmployeeByAdmin', Token.authenticateActor, accessManager.validateAccess, accessManager.validateChangedDetail, async (req, res) => {
-    const {name, familyName, email, department, organizationLevel, office, workingHour, role, status} = req.body;
+    // const {name, familyName, email, department, organizationLevel, office, workingHour, role, status} = req.body;
+    let employeeNewDetail = req.body;
     try {
-        await requestHandler.editEmployeeByAdmin(name, familyName, email, department, organizationLevel, office, workingHour, role, status);
+        // await requestHandler.editEmployeeByAdmin(name, familyName, email, department, organizationLevel, office, workingHour, role, status);
+        await requestHandler.editEmployeeByAdmin(req.email, employeeNewDetail);
         res.status(200).send("The user's detail(s) was successfully edited")
     } catch (err) {
         res.status(Exception.getStatusByExceptionMessage(err)).send(err);

@@ -4,8 +4,8 @@ const e = require("express");
 
 class Employee {
     // constructor(name, familyName, email, encryptedPassword, phoneNumber, department, organizationLevel, office, workingHour) {
-    constructor(userData) {
-        const {name, familyName, email, encryptedPassword, phoneNumber, department, organizationLevel, office, workingHour} = userData
+    constructor(userData, encryptedPassword) {
+        const {name, familyName, email, phoneNumber, department, organizationLevel, office, workingHour} = userData
         this.name = name;
         this.familyName = familyName;
         this.email = email;

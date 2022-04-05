@@ -12,8 +12,7 @@ class Admin extends Employee {
         if (!admin)
             throw "Only a logged in admin can do this action!"
 
-        await DataBaseManager.addAdmin(admin[0].email, admin[0].password, admin[0].phoneNumber, admin[0].name, admin[0].familyName, admin[0].department, admin[0].organizationLevel, admin[0].office, admin[0].workingHour);
-        return new Admin(admin[0].name, admin[0].familyName, email, admin[0].password, admin[0].department, admin[0].organizationLevel, admin[0].office, admin[0].workingHour);
+        return new Admin(admin[0], admin[0].password);
     }
 
     static login(email, password) {
@@ -25,7 +24,9 @@ class Admin extends Employee {
             throw "Invalid Credentials!"
     }
 
-    static async createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
+    // static async createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
+    static async createAdmin(adminDetail) {
+        let {password} = adminDetail;
         let admin = DataBaseManager.getAdmin();
         if (admin)
             throw "Admin has already been created";
@@ -34,22 +35,25 @@ class Admin extends Employee {
             throw "Your password should be at least 10 characters including alphabetic and numeric.";
 
         let encryptedPassword = bcrypt.hash(password, 10);
-        new Admin(name, familyName, email, encryptedPassword, phoneNumber, department, organizationLevel, office, workingHour);
-        await DataBaseManager.addAdmin(email, encryptedPassword, phoneNumber, name, familyName, department, organizationLevel, office, workingHour);
+
+        new Admin(adminDetail, encryptedPassword);
+        // new Admin(name, familyName, email, encryptedPassword, phoneNumber, department, organizationLevel, office, workingHour);
+        await DataBaseManager.addAdmin(adminDetail, encryptedPassword);
+        // await DataBaseManager.addAdmin(email, encryptedPassword, phoneNumber, name, familyName, department, organizationLevel, office, workingHour);
     }
 
-    async registerEmployee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status) {
-        let employee = await Employee.getEmployeeByEmail(email);
+    async registerEmployee(employeeDetail) {
+    // async registerEmployee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status) {
+        let employee = await Employee.getEmployeeByEmail(employeeDetail.email);
         if (!employee)
             throw "کارمندی با ایمیل وارد شده وجود دارد!"
 
-        if (!isPasswordValid(password))
+        if (!isPasswordValid(employeeDetail.password))
             throw "Your password should be at least 10 characters including alphabetic and numeric.";
 
-        let encryptedPassword = bcrypt.hash(password, 10);
-        //todo change the variables given to the constructor into json
-        new Employee(name, familyName, email, encryptedPassword, phoneNumber, department, organizationLevel, office, workingHour, role, status);
-        await DataBaseManager.addEmployee(role, email, encryptedPassword, phoneNumber, familyName, department, organizationLevel, office, workingHour, status);
+        let encryptedPassword = bcrypt.hash(employeeDetail.password, 10);
+        new Employee(employeeDetail, encryptedPassword);
+        await DataBaseManager.addEmployee(employeeDetail, encryptedPassword);
     }
 
     async viewListOfEmployee() {
@@ -75,7 +79,9 @@ class Admin extends Employee {
         return enOrDis;
     }
 
-    async editEmployee(name, familyName, email, department, organizationLevel, office, workingHour, role, status) {
+    // async editEmployee(name, familyName, email, department, organizationLevel, office, workingHour, role, status) {
+    async editEmployee(employeeNewData) {
+        let {name, familyName, email, department, organizationLevel, office, workingHour, role, status} = employeeNewData;
         let employee = Employee.getEmployeeByEmail(email);
         if (name) {
             await DataBaseManager.changeName(name, email);

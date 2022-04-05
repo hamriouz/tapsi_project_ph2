@@ -26,7 +26,8 @@ class UserDataAccess {
         return this.getUserByEmail(email)[0].status
     }
 
-    static async addAdmin(email, encryptedPassword, phoneNumber, name, familyName, department, organizationLevel, office, workingHour) {
+    static async addAdmin(adminDetail, encryptedPassword) {
+        const {email, phoneNumber, name, familyName, department, organizationLevel, office, workingHour} = adminDetail;
         await User.query().insert({
             role: "admin",
             email: email,
@@ -43,7 +44,8 @@ class UserDataAccess {
 
     }
 
-    static async addEmployee(role, email, encryptedPassword, phoneNumber, familyName, department, organizationLevel, office, workingHour, status) {
+    static async addEmployee(employeeDetail ,encryptedPassword) {
+        const {role, email, phoneNumber, familyName, department, organizationLevel, office, workingHour, status} = employeeDetail;
         await User.query().insert({
             role: role,
             email: email,

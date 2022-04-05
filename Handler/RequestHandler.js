@@ -2,22 +2,50 @@ const Employee = require('../Domain/Employee');
 const Admin = require('../Domain/Admin');
 
 class RequestHandler {
-    async createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
+    // async createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
+    async createAdmin(adminDetail) {
+        let {
+            name,
+            familyName,
+            email,
+            password,
+            phoneNumber,
+            department,
+            organizationLevel,
+            office,
+            workingHour
+        } = adminDetail;
         if (!(name && familyName && email && password && phoneNumber && department && organizationLevel && office && workingHour))
             throw ("please fill all the information");
         try {
-            await Admin.createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour);
+            await Admin.createAdmin(adminDetail);
+            // await Admin.createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour);
         } catch (err) {
             throw err
         }
     }
 
-    async registerEmployee(requestEmail, name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status) {
+    // async registerEmployee(requestEmail, name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status) {
+    async registerEmployee(requestEmail, employeeDetail) {
+        let {
+            name,
+            familyName,
+            email,
+            password,
+            phoneNumber,
+            department,
+            organizationLevel,
+            office,
+            workingHour,
+            role,
+            status
+        } = employeeDetail;
         if (!(name && familyName && email && password && phoneNumber && department && organizationLevel && office && workingHour && role && status))
             throw "please fill all the information";
         try {
             const admin = await Admin.getAdminByEmail(requestEmail);
-            await admin.registerEmployee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status);
+            await admin.registerEmployee(employeeDetail);
+            // await admin.registerEmployee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status);
         } catch (err) {
             throw err
         }
@@ -31,8 +59,7 @@ class RequestHandler {
             if (user[0].status === "admin") {
                 Admin.login(email, password)
             } else Employee.login(email, password);
-        }
-        catch (err){
+        } catch (err) {
             throw err;
         }
     }
@@ -68,10 +95,12 @@ class RequestHandler {
         }
     }
 
-    async editEmployeeByAdmin(requestEmail, name, familyName, email, department, organizationLevel, office, workingHour, role, status) {
+    async editEmployeeByAdmin(requestEmail, employeeNewData) {
+        // async editEmployeeByAdmin(requestEmail, name, familyName, email, department, organizationLevel, office, workingHour, role, status) {
         try {
             const admin = await Admin.getAdminByEmail(requestEmail);
-            await admin.editEmployee(name, familyName, email, department, organizationLevel, office, workingHour, role, status);
+            await admin.editEmployee(employeeNewData);
+            // await admin.editEmployee(name, familyName, email, department, organizationLevel, office, workingHour, role, status);
         } catch (err) {
             throw err
         }
@@ -97,13 +126,13 @@ class RequestHandler {
         }
     }
 
-    async getAllEmployeesInAnOffice(requestEmail, office){
+    async getAllEmployeesInAnOffice(requestEmail, office) {
         if (!office)
             throw ("please fill all the information");
-        try{
+        try {
             const employee = await Employee.getEmployeeByEmail(requestEmail);
             return await employee.getAllEmployeesOfOffice(office);
-        }catch (err){
+        } catch (err) {
             throw err;
         }
     }
@@ -119,11 +148,11 @@ class RequestHandler {
         }
     }
 
-    async getUserByID(userIdentifier){
+    async getUserByID(userIdentifier) {
         try {
             const user = await Employee.getEmployeeByIdentifier(userIdentifier);
             return user
-        }catch (err){
+        } catch (err) {
             return null;
         }
     }
