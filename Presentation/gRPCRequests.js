@@ -1,11 +1,10 @@
 const jwt = require("jsonwebtoken");
-const RequestHandler = require("../Handler/RequestHandler");
-const   requestHandler = RequestHandler.getInstance();
+const EmployeeRequestHandler = require("../Handler/EmployeeRequestHandler");
 
 
 class GRPCRequests {
     async getUser(userIdentifier) {
-        return await requestHandler.getUserByID(userIdentifier);
+        return await EmployeeRequestHandler.getUserByID(userIdentifier);
     }
 
      isWantedRole(token, role){

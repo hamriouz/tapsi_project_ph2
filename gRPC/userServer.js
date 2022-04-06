@@ -5,7 +5,6 @@ const PROTO_PATH = __dirname + '/user.proto';
 const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
 const _ = require('lodash');
-const RequestHandler = require("../Handler/RequestHandler");
 
 const gRPCRequestHandler = gRPCInstance.getInstance();
 
