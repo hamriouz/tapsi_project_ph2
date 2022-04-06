@@ -36,7 +36,7 @@ app.post('/RoomManagement/CreateAdmin', async (req, res) => {
     }
 })
 
-app.post('/RoomManagement/SignUpEmployee', Token.authenticateActor, accessManager.validateAccess, accessManager.validateChangedDetail, async (req, res) => {
+app.post('/RoomManagement/SignUpEmployee', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
 /*    const {
         name,
         familyName,
@@ -71,7 +71,7 @@ app.post('/RoomManagement/Login', async (req, res) => {
     }
 })
 
-app.post('/RoomManagement/ViewListOfEmployees', Token.authenticateActor, accessManager.validateAccess, accessManager.validateChangedDetail, async (req, res) => {
+app.post('/RoomManagement/ViewListOfEmployees', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     try {
         const allEmployees = await requestHandler.getListOfEmployee();
         res.status(201).send(allEmployees);
@@ -80,7 +80,7 @@ app.post('/RoomManagement/ViewListOfEmployees', Token.authenticateActor, accessM
     }
 })
 
-app.post('/RoomManagement/EnableDisableEmployee', Token.authenticateActor, accessManager.validateAccess, accessManager.validateChangedDetail, async (req, res) => {
+app.post('/RoomManagement/EnableDisableEmployee', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     const {email} = req.body;
     try {
         let enOrDis = requestHandler.enableDisableEmployee(email);
@@ -90,7 +90,7 @@ app.post('/RoomManagement/EnableDisableEmployee', Token.authenticateActor, acces
     }
 })
 
-app.post('/RoomManagement/ViewEmployee', Token.authenticateActor, accessManager.validateAccess, accessManager.validateChangedDetail, async (req, res) => {
+app.post('/RoomManagement/ViewEmployee', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     const {email} = req.body;
     try {
         let employee = requestHandler.getDetailOneEmployee(email);
@@ -100,7 +100,7 @@ app.post('/RoomManagement/ViewEmployee', Token.authenticateActor, accessManager.
     }
 })
 
-app.post('/RoomManagement/EditEmployeeByAdmin', Token.authenticateActor, accessManager.validateAccess, accessManager.validateChangedDetail, async (req, res) => {
+app.post('/RoomManagement/EditEmployeeByAdmin', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     // const {name, familyName, email, department, organizationLevel, office, workingHour, role, status} = req.body;
     let employeeNewDetail = req.body;
     try {
@@ -112,7 +112,7 @@ app.post('/RoomManagement/EditEmployeeByAdmin', Token.authenticateActor, accessM
     }
 })
 
-app.post('/RoomManagement/EditEmployeeByEmployee', Token.authenticateActor, accessManager.validateAccess, accessManager.validateChangedDetail, async (req, res) => {
+app.post('/RoomManagement/EditEmployeeByEmployee', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     const {name, familyName, workingHour} = req.body;
     try {
         await requestHandler.editEmployeeByEmployee(name, familyName, workingHour);
@@ -122,7 +122,7 @@ app.post('/RoomManagement/EditEmployeeByEmployee', Token.authenticateActor, acce
     }
 })
 
-app.post('/RoomManagement/SeeAllEmployeeDepartment', Token.authenticateActor, accessManager.validateAccess, accessManager.validateChangedDetail, async (req, res) => {
+app.post('/RoomManagement/SeeAllEmployeeDepartment', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     const {department} = req.body;
     try {
         const allEmployeeInDepartment = requestHandler.getAllEmployeesInADepartment(department);
@@ -132,7 +132,7 @@ app.post('/RoomManagement/SeeAllEmployeeDepartment', Token.authenticateActor, ac
     }
 })
 
-app.post('/RoomManagement/SeeAllEmployeeOffice', Token.authenticateActor, accessManager.validateAccess, accessManager.validateChangedDetail, async (req, res) => {
+app.post('/RoomManagement/SeeAllEmployeeOffice', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     const {office} = req.body;
     try {
         const allEmployeeInOffice = requestHandler.getAllEmployeesInAnOffice(office);
@@ -142,7 +142,7 @@ app.post('/RoomManagement/SeeAllEmployeeOffice', Token.authenticateActor, access
     }
 })
 
-app.post('/RoomManagement/SeeWorkingHour', Token.authenticateActor, accessManager.validateAccess, accessManager.validateChangedDetail, async (req, res) => {
+app.post('/RoomManagement/SeeWorkingHour', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     const {email} = req.body;
     try {
         const workingHour = requestHandler.getWorkingHourOfEmployee(email);

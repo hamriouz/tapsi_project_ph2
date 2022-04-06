@@ -1,6 +1,8 @@
-const DataBaseManager = require('../DataAccess/UserDataAccess');
+const UserDataBase = require('../DataAccess/UserDataAccess');
 const bcrypt = require("bcryptjs");
 const e = require("express");
+
+let userDataAccess = new UserDataBase();
 
 class Employee {
     // constructor(name, familyName, email, encryptedPassword, phoneNumber, department, organizationLevel, office, workingHour) {
@@ -18,14 +20,14 @@ class Employee {
     }
 
     static async getEmployeeByEmail(email) {
-        const employee = await DataBaseManager.getUserByEmail(email);
+        const employee = await userDataAccess.getUserByEmail(email);
         if (!employee)
             throw "Only a logged in employee can do this action!"
         return new Employee(employee[0], employee[0].password);
     }
 
     static async getEmployeeByIdentifier(identifier){
-        const employee = await DataBaseManager.getUserByIdentifier(identifier);
+        const employee = await userDataAccess.getUserByIdentifier(identifier);
         if (employee)
             return new Employee(employee[0], employee[0].password)
         else return null;
@@ -42,31 +44,31 @@ class Employee {
 
     async editEmployee(name, familyName, workingHour) {
         if (name) {
-            await DataBaseManager.changeName(name, this.email);
+            await userDataAccess.changeName(name, this.email);
             this.name = name;
         }
         if (familyName) {
-            await DataBaseManager.changeFamilyName(familyName, this.email);
+            await userDataAccess.changeFamilyName(familyName, this.email);
             this.familyName = familyName;
         }
         if (workingHour) {
-            await DataBaseManager.changeWorkingHour(workingHour, this.email);
+            await userDataAccess.changeWorkingHour(workingHour, this.email);
             this.workingHour = workingHour;
         }
     }
 
     async getAllEmployeesOfDepartment(department) {
-        const allInDepartment = await DataBaseManager.allEmployeeDepartment(department);
+        const allInDepartment = await userDataAccess.allEmployeeDepartment(department);
         return allInDepartment;
     }
 
     async getAllEmployeesOfOffice(office){
-        const allInOffice = await DataBaseManager.allEmployeeOffice(office);
+        const allInOffice = await userDataAccess.allEmployeeOffice(office);
         return allInOffice;
     }
 
     async seeWorkingHour(email) {
-        const workingHour = await DataBaseManager.workingHour(email);
+        const workingHour = await userDataAccess.workingHour(email);
         return workingHour;
     }
 }

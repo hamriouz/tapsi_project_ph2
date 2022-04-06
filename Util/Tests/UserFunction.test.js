@@ -8,7 +8,7 @@ test("remove all users", () => {
     expect(User.findObjectByKey("email", "a")).toBeNull();
 })
 
-//TODO test login?
+
 
 test("change detail", () => {
     Registration.createEmployeeByAdmin("a","a","a","123456789a","a","a","a","a","a","a","a")

@@ -1,6 +1,8 @@
-const DataBaseManager = require("../DataAccess/UserDataAccess");
+const UserDataAccess = require("../DataAccess/UserDataAccess");
 const Employee = require('./Employee');
 const bcrypt = require("bcryptjs");
+
+const userDataAccess = new UserDataAccess();
 
 class Admin extends Employee {
     constructor() {
@@ -8,7 +10,7 @@ class Admin extends Employee {
     }
 
     static async getAdminByEmail(email) {
-        const admin = DataBaseManager.getUserByEmail(email);
+        const admin = userDataAccess.getUserByEmail(email);
         if (!admin)
             throw "Only a logged in admin can do this action!"
 
@@ -27,7 +29,7 @@ class Admin extends Employee {
     // static async createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
     static async createAdmin(adminDetail) {
         let {password} = adminDetail;
-        let admin = DataBaseManager.getAdmin();
+        let admin = userDataAccess.getAdmin();
         if (admin)
             throw "Admin has already been created";
 
@@ -38,8 +40,8 @@ class Admin extends Employee {
 
         new Admin(adminDetail, encryptedPassword);
         // new Admin(name, familyName, email, encryptedPassword, phoneNumber, department, organizationLevel, office, workingHour);
-        await DataBaseManager.addAdmin(adminDetail, encryptedPassword);
-        // await DataBaseManager.addAdmin(email, encryptedPassword, phoneNumber, name, familyName, department, organizationLevel, office, workingHour);
+        await userDataAccess.addAdmin(adminDetail, encryptedPassword);
+        // await userDataAccess.addAdmin(email, encryptedPassword, phoneNumber, name, familyName, department, organizationLevel, office, workingHour);
     }
 
     async registerEmployee(employeeDetail) {
@@ -53,27 +55,27 @@ class Admin extends Employee {
 
         let encryptedPassword = bcrypt.hash(employeeDetail.password, 10);
         new Employee(employeeDetail, encryptedPassword);
-        await DataBaseManager.addEmployee(employeeDetail, encryptedPassword);
+        await userDataAccess.addEmployee(employeeDetail, encryptedPassword);
     }
 
     async viewListOfEmployee() {
-        const list = await DataBaseManager.listEmployeeAdmin();
+        const list = await userDataAccess.listEmployeeAdmin();
         return list;
     }
 
     async viewDetailOfOneEmployee(email) {
-        const detailOfEmployee = await DataBaseManager.detailEmployeeAdmin(email);
+        const detailOfEmployee = await userDataAccess.detailEmployeeAdmin(email);
         return detailOfEmployee;
     }
 
     async enableDisableEmployee(email) {
         let enOrDis;
-        let employeeStatus = DataBaseManager.getStatus(email);
+        let employeeStatus = userDataAccess.getStatus(email);
         if (employeeStatus === "enable") {
-            await DataBaseManager.disable(email)
+            await userDataAccess.disable(email)
             enOrDis = "disabled";
         } else {
-            await DataBaseManager.enable(email)
+            await userDataAccess.enable(email)
             enOrDis = "enabled";
         }
         return enOrDis;
@@ -84,35 +86,35 @@ class Admin extends Employee {
         let {name, familyName, email, department, organizationLevel, office, workingHour, role, status} = employeeNewData;
         let employee = Employee.getEmployeeByEmail(email);
         if (name) {
-            await DataBaseManager.changeName(name, email);
+            await userDataAccess.changeName(name, email);
             employee.name = name;
         }
         if (familyName) {
-            await DataBaseManager.changeFamilyName(familyName, email);
+            await userDataAccess.changeFamilyName(familyName, email);
             employee.familyName = familyName;
         }
         if (department) {
-            await DataBaseManager.changeDepartment(department, email);
+            await userDataAccess.changeDepartment(department, email);
             employee.department = department;
         }
         if (organizationLevel) {
-            await DataBaseManager.changeOrganizationLevel(organizationLevel, email);
+            await userDataAccess.changeOrganizationLevel(organizationLevel, email);
             employee.organizationLevel = organizationLevel;
         }
         if (office) {
-            await DataBaseManager.changeOffice(office, email);
+            await userDataAccess.changeOffice(office, email);
             employee.office = office;
         }
         if (workingHour) {
-            await DataBaseManager.workingHour(workingHour, email);
+            await userDataAccess.workingHour(workingHour, email);
             employee.workingHour = workingHour;
         }
         if (role) {
-            await DataBaseManager.changeRole(role, email);
+            await userDataAccess.changeRole(role, email);
             employee.role = role;
         }
         if (status) {
-            await DataBaseManager.changeRole(role, email);
+            await userDataAccess.changeStatus(role, email);
             employee.role = role;
         }
     }

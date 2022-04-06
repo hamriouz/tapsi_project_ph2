@@ -11,7 +11,7 @@ class AccessManager {
         res.status(403).send("Access denied! Please login!");
     }
 
-    static validateChangedDetail(req, res, next) {
+    static isEnable(req, res, next) {
         const email = req.userEmail;
         const tokenRole = req.userRole;
         const user = DataBaseManager.getUserByEmail(email)
