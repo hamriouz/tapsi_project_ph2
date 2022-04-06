@@ -1,8 +1,7 @@
 const Employee = require('../Domain/Employee');
-const Admin = require('../Domain/Admin');
+const {Admin} = require('../Domain/Admin');
 
 class RequestHandler {
-    // async createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
     async createAdmin(adminDetail) {
         let {
             name,
@@ -19,13 +18,11 @@ class RequestHandler {
             throw ("please fill all the information");
         try {
             await Admin.createAdmin(adminDetail);
-            // await Admin.createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour);
         } catch (err) {
             throw err
         }
     }
 
-    // async registerEmployee(requestEmail, name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status) {
     async registerEmployee(requestEmail, employeeDetail) {
         let {
             name,
@@ -45,7 +42,6 @@ class RequestHandler {
         try {
             const admin = await Admin.getAdminByEmail(requestEmail);
             await admin.registerEmployee(employeeDetail);
-            // await admin.registerEmployee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status);
         } catch (err) {
             throw err
         }
@@ -96,11 +92,9 @@ class RequestHandler {
     }
 
     async editEmployeeByAdmin(requestEmail, employeeNewData) {
-        // async editEmployeeByAdmin(requestEmail, name, familyName, email, department, organizationLevel, office, workingHour, role, status) {
         try {
             const admin = await Admin.getAdminByEmail(requestEmail);
             await admin.editEmployee(employeeNewData);
-            // await admin.editEmployee(name, familyName, email, department, organizationLevel, office, workingHour, role, status);
         } catch (err) {
             throw err
         }
@@ -178,3 +172,11 @@ const RequestHandlerInstance = (function () {
 })();
 
 module.exports = RequestHandlerInstance;
+
+
+// async createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
+// await Admin.createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour);
+// async registerEmployee(requestEmail, name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status) {
+// await admin.registerEmployee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status);
+// async editEmployeeByAdmin(requestEmail, name, familyName, email, department, organizationLevel, office, workingHour, role, status) {
+// await admin.editEmployee(name, familyName, email, department, organizationLevel, office, workingHour, role, status);

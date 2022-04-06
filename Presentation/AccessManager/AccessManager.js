@@ -1,9 +1,10 @@
-const DataBaseManager = require('../../DataAccess/UserDataAccess')
+const UserDataAccess = require('../../DataAccess/UserDataAccess')
 const ApiGroups = require('./ApiGroups');
 
+let userDataAccess = new UserDataAccess();
 
 class AccessManager {
-    static validateAccess(req, res, next) {
+    validateAccess(req, res, next) {
         const {role: tokenRole} = req;
         if (ApiGroups[tokenRole] && ApiGroups[tokenRole].routes.some(route => req.route === route)) {
             next();
@@ -11,12 +12,12 @@ class AccessManager {
         res.status(403).send("Access denied! Please login!");
     }
 
-    static isEnable(req, res, next) {
+    async  isEnable(req, res, next) {
         const email = req.userEmail;
         const tokenRole = req.userRole;
-        const user = DataBaseManager.getUserByEmail(email)
-        const userRole = DataBaseManager.getRole(email)
-        const userStatus = DataBaseManager.getStatus(email)
+        const user = await userDataAccess.getUserByEmail(email)
+        const userRole = await userDataAccess.getRole(email)
+        const userStatus = await userDataAccess.getStatus(email)
 
         if (user) {
             if (userRole !== tokenRole)

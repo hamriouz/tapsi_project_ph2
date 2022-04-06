@@ -2,33 +2,22 @@ const setupDb = require('../DataAccess/db/db-setup');
 const express = require('express');
 const Exception = require("../Util/Exception")
 const Token = require("./AccessManager/Token");
-const accessManager = require("./AccessManager/AccessManager");
+const AccessManager = require("./AccessManager/AccessManager");
 const RequestHandler = require('../Handler/RequestHandler');
 
 
 setupDb();
 
 const requestHandler = RequestHandler.getInstance();
+const accessManager = new AccessManager();
 
 const app = express();
 app.use(express.json());
 
 
 app.post('/RoomManagement/CreateAdmin', async (req, res) => {
-/*    const {
-        name,
-        familyName,
-        email,
-        password,
-        phoneNumber,
-        department,
-        organizationLevel,
-        office,
-        workingHour
-    } = req.body;*/
     let adminData = req.body;
     try {
-        // await requestHandler.createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour);
         await requestHandler.createAdmin(adminData);
         res.status(201).send("Admin was successfully created!");
     } catch (err) {
@@ -37,22 +26,8 @@ app.post('/RoomManagement/CreateAdmin', async (req, res) => {
 })
 
 app.post('/RoomManagement/SignUpEmployee', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
-/*    const {
-        name,
-        familyName,
-        email,
-        password,
-        phoneNumber,
-        department,
-        organizationLevel,
-        office,
-        workingHour,
-        role,
-        status
-    } = req.body;*/
     let employeeData = req.body;
     try {
-        // await requestHandler.registerEmployee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status)
         await requestHandler.registerEmployee(req.email, employeeData);
         res.status(201).send("Username with email address \"" + employeeData.email + "\" was successfully created!");
     } catch (err) {
@@ -101,10 +76,8 @@ app.post('/RoomManagement/ViewEmployee', Token.authenticateActor, accessManager.
 })
 
 app.post('/RoomManagement/EditEmployeeByAdmin', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
-    // const {name, familyName, email, department, organizationLevel, office, workingHour, role, status} = req.body;
     let employeeNewDetail = req.body;
     try {
-        // await requestHandler.editEmployeeByAdmin(name, familyName, email, department, organizationLevel, office, workingHour, role, status);
         await requestHandler.editEmployeeByAdmin(req.email, employeeNewDetail);
         res.status(200).send("The user's detail(s) was successfully edited")
     } catch (err) {
@@ -155,5 +128,18 @@ app.post('/RoomManagement/SeeWorkingHour', Token.authenticateActor, accessManage
 app.listen(2000)
 
 
+
+
+
+
+
+
+
+
+
 /* const token = req.header('Authorization')
  accessManager.validateEmployee(Token.authenticateActor(token), Token.getLoggedInUserRole(token));*/
+
+// await requestHandler.createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour);
+// await requestHandler.registerEmployee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status)
+// await requestHandler.editEmployeeByAdmin(name, familyName, email, department, organizationLevel, office, workingHour, role, status);

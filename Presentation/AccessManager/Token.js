@@ -7,7 +7,6 @@ class Token {
         let decoded_token;
         try {
             jwt.verify(token, process.env.TOKEN_KEY, {}, function (err, decoded) {
-                // if (err) throw "Access denied! Please login!"
                 res.status(403).send("Access denied! Please login!");
                 decoded_token = decoded //token info is returned in 'decoded'
             })
@@ -19,7 +18,6 @@ class Token {
         next();
     }
 
-    //todo add id
     static createToken(email, role) {
         return jwt.sign(
             {

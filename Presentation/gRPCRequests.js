@@ -4,7 +4,7 @@ const   requestHandler = RequestHandler.getInstance();
 
 
 class GRPCRequests {
-    static async getUser(userIdentifier) {
+    async getUser(userIdentifier) {
         let user = await requestHandler.getUserByID(userIdentifier);
         return user;
     }

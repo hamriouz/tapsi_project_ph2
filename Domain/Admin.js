@@ -10,7 +10,7 @@ class Admin extends Employee {
     }
 
     static async getAdminByEmail(email) {
-        const admin = userDataAccess.getUserByEmail(email);
+        const admin = await userDataAccess.getUserByEmail(email);
         if (!admin)
             throw "Only a logged in admin can do this action!"
 
@@ -29,7 +29,7 @@ class Admin extends Employee {
     // static async createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
     static async createAdmin(adminDetail) {
         let {password} = adminDetail;
-        let admin = userDataAccess.getAdmin();
+        let admin = await userDataAccess.getAdmin();
         if (admin)
             throw "Admin has already been created";
 
@@ -70,7 +70,7 @@ class Admin extends Employee {
 
     async enableDisableEmployee(email) {
         let enOrDis;
-        let employeeStatus = userDataAccess.getStatus(email);
+        let employeeStatus = await userDataAccess.getStatus(email);
         if (employeeStatus === "enable") {
             await userDataAccess.disable(email)
             enOrDis = "disabled";
@@ -126,4 +126,4 @@ function isPasswordValid(givenPassword) {
     return passwordRegex.test(givenPassword);
 }
 
-module.exports = Admin;
+module.exports = {Admin, isPasswordValid};

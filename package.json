@@ -23,5 +23,8 @@
     "objection": "^3.0.1",
     "pg": "^8.5.1",
     "pug": "2.0.0-beta11"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1"
   }
 }
