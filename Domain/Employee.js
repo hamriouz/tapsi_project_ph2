@@ -5,7 +5,6 @@ const e = require("express");
 let userDataAccess = new UserDataBase();
 
 class Employee {
-    // constructor(name, familyName, email, encryptedPassword, phoneNumber, department, organizationLevel, office, workingHour) {
     constructor(userData, encryptedPassword) {
         const {name, familyName, email, phoneNumber, department, organizationLevel, office, workingHour} = userData
         this.name = name;
@@ -23,7 +22,7 @@ class Employee {
         const employee = await userDataAccess.getUserByEmail(email);
         if (!employee)
             throw "Only a logged in employee can do this action!"
-        return new Employee(employee[0], employee[0].password);
+        return new Employee(employee[0], userDataAccess.getPassword(email));
     }
 
     static async getEmployeeByIdentifier(identifier){
@@ -35,8 +34,8 @@ class Employee {
 
     static login(email, password) {
         const employee = this.getEmployeeByEmail(email);
-        if (bcrypt.compare(password, employee[0].password)) {
-            if (employee[0].status !== "enable")
+        if (bcrypt.compare(password, employee.password)) {
+            if (employee.status !== "enable")
                 throw "Your account was disabled! You don't have the permission to log in!"
         } else
             throw "Invalid Credentials!"
@@ -74,3 +73,10 @@ class Employee {
 }
 
 module.exports = Employee
+
+
+
+
+
+
+// constructor(name, familyName, email, encryptedPassword, phoneNumber, department, organizationLevel, office, workingHour) {

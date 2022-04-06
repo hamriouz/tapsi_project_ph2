@@ -52,7 +52,7 @@ class RequestHandler {
             throw "please fill all the information";
         try {
             const user = Employee.getEmployeeByEmail(email);
-            if (user[0].status === "admin") {
+            if (user.status === "admin") {
                 Admin.login(email, password)
             } else Employee.login(email, password);
         } catch (err) {
@@ -144,8 +144,7 @@ class RequestHandler {
 
     async getUserByID(userIdentifier) {
         try {
-            const user = await Employee.getEmployeeByIdentifier(userIdentifier);
-            return user
+            return await Employee.getEmployeeByIdentifier(userIdentifier)
         } catch (err) {
             return null;
         }

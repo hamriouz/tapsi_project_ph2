@@ -5,8 +5,7 @@ const   requestHandler = RequestHandler.getInstance();
 
 class GRPCRequests {
     async getUser(userIdentifier) {
-        let user = await requestHandler.getUserByID(userIdentifier);
-        return user;
+        return await requestHandler.getUserByID(userIdentifier);
     }
 
      isWantedRole(token, role){

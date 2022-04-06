@@ -6,7 +6,7 @@ class UserDataAccess {
     }
 
     async getUserByEmail(email) {
-        return User.query().select("*").where('email', '=', email)
+        return User.query().select("*").where('email', '=', email);
     }
 
     async getUserByIdentifier(identifier) {
@@ -14,16 +14,16 @@ class UserDataAccess {
     }
 
     async getRole(email) {
-        return this.getUserByEmail(email)[0].role
+        return this.getUserByEmail(email)[0].role;
 
     }
 
     async getPassword(email) {
-        return this.getUserByEmail(email)[0].password
+        return this.getUserByEmail(email)[0].password;
     }
 
     async getStatus(email) {
-        return this.getUserByEmail(email)[0].status
+        return this.getUserByEmail(email)[0].status;
     }
 
     async addAdmin(adminDetail, encryptedPassword) {
@@ -40,7 +40,7 @@ class UserDataAccess {
             office: office,
             working_hour: workingHour,
             status: "enable",
-        })
+        });
 
     }
 
@@ -68,7 +68,7 @@ class UserDataAccess {
             office: office,
             working_hour: workingHour,
             status: status,
-        })
+        });
     }
 
     async listEmployeeAdmin() {
@@ -91,7 +91,7 @@ class UserDataAccess {
             'working_hour',
             'role',
             'status'
-        ).where("email", '=', email)
+        ).where("email", '=', email);
     }
 
     async allEmployeeDepartment(department) {
@@ -99,7 +99,7 @@ class UserDataAccess {
             'email',
             'name',
             'family_name')
-            .where("department", '=', department)
+            .where("department", '=', department);
     }
 
     async allEmployeeOffice(office) {
@@ -107,7 +107,7 @@ class UserDataAccess {
             'email',
             'name',
             'family_name')
-            .where("office", '=', office)
+            .where("office", '=', office);
     }
 
     async workingHour(email) {

@@ -38,7 +38,7 @@ class Exception {
             "there aren't any employees in the given department!"
             :
             case
-            "کارمندی با ایمیل وارد شده وجود دارد!"
+            "Repetitive email address!"
             :
             case
             "Your password should be at least 10 characters including alphabetic and numeric."

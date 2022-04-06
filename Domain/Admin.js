@@ -14,24 +14,24 @@ class Admin extends Employee {
         if (!admin)
             throw "Only a logged in admin can do this action!"
 
-        return new Admin(admin[0], admin[0].password);
+        return new Admin(admin[0], userDataAccess.getPassword(email));
     }
 
-    static login(email, password) {
-        const admin = this.getAdminByEmail(email);
-        if (bcrypt.compare(password, admin[0].password)) {
-            if (admin[0].status !== "enable")
+    static async login(email, password) {
+        const admin = await this.getAdminByEmail(email);
+        if (bcrypt.compare(password, userDataAccess.getPassword(email))) {
+            if (await userDataAccess.getStatus(email) !== "enable")
                 throw "Your account was disabled! You don't have the permission to log in!"
         } else
             throw "Invalid Credentials!"
     }
 
-    // static async createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
     static async createAdmin(adminDetail) {
-        let {password} = adminDetail;
         let admin = await userDataAccess.getAdmin();
         if (admin)
             throw "Admin has already been created";
+
+        let {password} = adminDetail;
 
         if (!isPasswordValid(password))
             throw "Your password should be at least 10 characters including alphabetic and numeric.";
@@ -45,10 +45,9 @@ class Admin extends Employee {
     }
 
     async registerEmployee(employeeDetail) {
-    // async registerEmployee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status) {
         let employee = await Employee.getEmployeeByEmail(employeeDetail.email);
         if (!employee)
-            throw "کارمندی با ایمیل وارد شده وجود دارد!"
+            throw "Repetitive email address!"
 
         if (!isPasswordValid(employeeDetail.password))
             throw "Your password should be at least 10 characters including alphabetic and numeric.";
@@ -81,7 +80,6 @@ class Admin extends Employee {
         return enOrDis;
     }
 
-    // async editEmployee(name, familyName, email, department, organizationLevel, office, workingHour, role, status) {
     async editEmployee(employeeNewData) {
         let {name, familyName, email, department, organizationLevel, office, workingHour, role, status} = employeeNewData;
         let employee = Employee.getEmployeeByEmail(email);
@@ -126,4 +124,8 @@ function isPasswordValid(givenPassword) {
     return passwordRegex.test(givenPassword);
 }
 
-module.exports = {Admin, isPasswordValid};
+module.exports = {Admin};
+
+// static async createAdmin(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour) {
+// async registerEmployee(name, familyName, email, password, phoneNumber, department, organizationLevel, office, workingHour, role, status) {
+// async editEmployee(name, familyName, email, department, organizationLevel, office, workingHour, role, status) {
