@@ -74,47 +74,6 @@ class UserDataAccess {
         return User.query().select('*');
     }
 
-/*
-    async listEmployeeAdmin() {
-        return User.query().select(
-            'name',
-            'family_name',
-            'department',
-            'office');
-    }
-
-    async detailEmployeeAdmin(email) {
-        return User.query().select(
-            'name',
-            'family_name',
-            'email',
-            'phone_number',
-            'department',
-            'organization_level',
-            'office',
-            'working_hour',
-            'role',
-            'status'
-        ).where("email", '=', email);
-    }
-
-    async allEmployeeDepartment(department) {
-        return User.query().select(
-            'email',
-            'name',
-            'family_name')
-            .where("department", '=', department);
-    }
-
-    async allEmployeeOffice(office) {
-        return User.query().select(
-            'email',
-            'name',
-            'family_name')
-            .where("office", '=', office);
-    }
-*/
-
     async workingHour(email) {
         return this.getUserByEmail(email)[0].working_hour;
     }
@@ -198,6 +157,48 @@ class UserDataAccess {
                 status: 'disable'
             });
     }
+
+
+    /*
+        async listEmployeeAdmin() {
+            return User.query().select(
+                'name',
+                'family_name',
+                'department',
+                'office');
+        }
+
+        async detailEmployeeAdmin(email) {
+            return User.query().select(
+                'name',
+                'family_name',
+                'email',
+                'phone_number',
+                'department',
+                'organization_level',
+                'office',
+                'working_hour',
+                'role',
+                'status'
+            ).where("email", '=', email);
+        }
+
+        async allEmployeeDepartment(department) {
+            return User.query().select(
+                'email',
+                'name',
+                'family_name')
+                .where("department", '=', department);
+        }
+
+        async allEmployeeOffice(office) {
+            return User.query().select(
+                'email',
+                'name',
+                'family_name')
+                .where("office", '=', office);
+        }
+    */
 }
 
 module.exports = UserDataAccess
