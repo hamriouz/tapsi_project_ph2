@@ -1,5 +1,4 @@
 const {Admin} = require('../Domain/Admin');
-const Employee = require("../Domain/Employee");
 
 class AdminRequestHandler{
     static async createAdmin(adminDetail) {
@@ -15,7 +14,8 @@ class AdminRequestHandler{
             workingHour
         } = adminDetail;
         if (!(name && familyName && email && password && phoneNumber && department && organizationLevel && office && workingHour))
-            throw ("please fill all the information");*/
+            throw ("please fill all the information");
+            */
         try {
             await Admin.createAdmin(adminDetail);
         } catch (err) {
@@ -37,8 +37,8 @@ class AdminRequestHandler{
             role,
             status
         } = employeeDetail;
-        if (!(name && familyName && email && password && phoneNumber && department && organizationLevel && office && workingHour && role && status))*/
-            // throw "please fill all the information";
+        if (!(name && familyName && email && password && phoneNumber && department && organizationLevel && office && workingHour && role && status))
+             throw "please fill all the information";*/
         try {
             const admin = await Admin.getAdminByEmail(requestEmail);
             await admin.registerEmployee(employeeDetail);
@@ -57,13 +57,9 @@ class AdminRequestHandler{
         }
     }
 
-    static async getListOfEmployee(requestEmail) {
-        try {
-            const admin = await Admin.getAdminByEmail(requestEmail);
-            return await admin.viewListOfEmployee();
-        } catch (err) {
-            throw err
-        }
+    static async getAllEmployees(requestEmail){
+        const admin = await Admin.getAdminByEmail(requestEmail);
+        return await admin.getAllEmployees();
     }
 
     static async changeEmployeeStatus(requestEmail, email) {
@@ -72,17 +68,6 @@ class AdminRequestHandler{
         try {
             const admin = await Admin.getAdminByEmail(requestEmail);
             return await admin.enableDisableEmployee(email)
-        } catch (err) {
-            throw err
-        }
-    }
-
-    static async getDetailOneEmployee(requestEmail, email) {
-        // if (!(email))
-        //     throw ("please fill all the information");
-        try {
-            const admin = await Admin.getAdminByEmail(requestEmail);
-            return await admin.viewDetailOfOneEmployee(email)
         } catch (err) {
             throw err
         }
@@ -99,11 +84,42 @@ class AdminRequestHandler{
 
     static async getUserByID(userIdentifier) {
         try {
-            return await Employee.getEmployeeByIdentifier(userIdentifier)
+            return await Admin.getEmployeeByIdentifier(userIdentifier)
         } catch (err) {
             return null;
         }
     }
+
+    /*static async getListOfEmployee(requestEmail) {
+        try {
+            //todo
+            return await AdminDataTransfer.getEmployeesDetail();
+            // const admin = await Admin.getAdminByEmail(requestEmail);
+            // return await admin.viewListOfEmployee();
+        } catch (err) {
+            throw err
+        }
+    }
+*/
+
+
+    /*  static async getEmployeeDetail(requestEmail, email) {
+          // if (!(email))
+          //     throw ("please fill all the information");
+          try {
+              //todo
+              return await AdminDataTransfer.getEmployeeDetail();
+              // const admin = await Admin.getAdminByEmail(requestEmail);
+              // return await admin.viewDetailOfOneEmployee(email)
+          } catch (err) {
+              throw err
+          }
+      }*/
 }
+
+
+//handler calls domain ->
+//domain returns data to presentation ->
+//presentation calls the DTO and filters the data
 
 module.exports = AdminRequestHandler;

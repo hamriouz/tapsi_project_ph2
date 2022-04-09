@@ -15,7 +15,6 @@ class UserDataAccess {
 
     async getRole(email) {
         return this.getUserByEmail(email)[0].role;
-
     }
 
     async getPassword(email) {
@@ -71,6 +70,11 @@ class UserDataAccess {
         });
     }
 
+    async getAllUsers(){
+        return User.query().select('*');
+    }
+
+/*
     async listEmployeeAdmin() {
         return User.query().select(
             'name',
@@ -109,10 +113,10 @@ class UserDataAccess {
             'family_name')
             .where("office", '=', office);
     }
+*/
 
     async workingHour(email) {
         return this.getUserByEmail(email)[0].working_hour;
-
     }
 
     async changeName(name, email) {

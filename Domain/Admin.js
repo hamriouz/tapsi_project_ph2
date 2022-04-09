@@ -57,16 +57,6 @@ class Admin extends Employee {
         await userDataAccess.addEmployee(employeeDetail, encryptedPassword);
     }
 
-    async viewListOfEmployee() {
-        const list = await userDataAccess.listEmployeeAdmin();
-        return list;
-    }
-
-    async viewDetailOfOneEmployee(email) {
-        const detailOfEmployee = await userDataAccess.detailEmployeeAdmin(email);
-        return detailOfEmployee;
-    }
-
     async enableDisableEmployee(email) {
         let enOrDis;
         let employeeStatus = await userDataAccess.getStatus(email);
@@ -117,6 +107,17 @@ class Admin extends Employee {
         }
     }
 
+    /*
+  async viewListOfEmployee() {
+      const list = await userDataAccess.listEmployeeAdmin();
+      return list;
+  }
+
+  async viewDetailOfOneEmployee(email) {
+      const detailOfEmployee = await userDataAccess.detailEmployeeAdmin(email);
+      return detailOfEmployee;
+  }
+*/
 }
 
 function isPasswordValid(givenPassword) {

@@ -1,6 +1,5 @@
 const UserDataBase = require('../DataAccess/UserDataAccess');
 const bcrypt = require("bcryptjs");
-const e = require("express");
 
 let userDataAccess = new UserDataBase();
 
@@ -56,6 +55,16 @@ class Employee {
         }
     }
 
+    async getAllEmployees(){
+        return userDataAccess.getAllUsers();
+    }
+
+    /*
+    static async viewListOfEmployee() {
+        const list = await userDataAccess.listEmployeeAdmin();
+        return list;
+    }
+
     async getAllEmployeesOfDepartment(department) {
         const allInDepartment = await userDataAccess.allEmployeeDepartment(department);
         return allInDepartment;
@@ -69,7 +78,7 @@ class Employee {
     async seeWorkingHour(email) {
         const workingHour = await userDataAccess.workingHour(email);
         return workingHour;
-    }
+    }*/
 }
 
 module.exports = Employee

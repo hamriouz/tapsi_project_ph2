@@ -5,6 +5,8 @@ const AccessManager = require("./AccessManager/AccessManager");
 const EmployeeRequestHandler = require('../Handler/EmployeeRequestHandler');
 const AdminRequestHandler = require('../Handler/AdminRequestHandler');
 const UndefinedException = require('../Util/ExceptionHandler/UndefinedException');
+const EmployeeDataTransfer = require('../DTO/EmployeeDataTransfer');
+const AdminDataTransfer = require('../DTO/AdminDataTransfer');
 
 const accessManager = new AccessManager();
 
@@ -57,8 +59,9 @@ app.post('/RoomManagement/Employee/Login', async (req, res) => {
 
 app.get('/RoomManagement/Admin/ListOfEmployees', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     try {
-        const allEmployees = await AdminRequestHandler.getListOfEmployee();
-        res.status(201).send(allEmployees);
+        let allEmployees = await AdminRequestHandler.getAllEmployees(req.email);
+        let listOfEmployees = AdminDataTransfer.getEmployeesDetail(allEmployees);
+        res.status(201).send(listOfEmployees);
     } catch (err) {
         res.status(Exception.getStatusByExceptionMessage(err)).send(err);
     }
@@ -79,8 +82,9 @@ app.get('/RoomManagement/Admin/ViewEmployee', Token.authenticateActor, accessMan
     const {email} = req.body;
     try {
         UndefinedException.emailException(email);
-        let employee = await AdminRequestHandler.getDetailOneEmployee(email);
-        res.status(200).send(employee);
+        let allEmployees = await AdminRequestHandler.getAllEmployees(req.email);
+        let employeeDetail =  AdminDataTransfer.getEmployeeDetail(allEmployees, email);
+        res.status(200).send(employeeDetail);
     } catch (err) {
         res.status(Exception.getStatusByExceptionMessage(err)).send(err);
     }
@@ -110,8 +114,9 @@ app.post('/RoomManagement/Employee/AllEmployeeInDepartment', Token.authenticateA
     const {department} = req.body;
     try {
         UndefinedException.departmentException(department);
-        const allEmployeeInDepartment = await EmployeeRequestHandler.getAllEmployeesInADepartment(department);
-        res.status(200).send(allEmployeeInDepartment);
+        let allEmployees = await EmployeeRequestHandler.getAllEmployees(req.email);
+        const employeesInDepartment = EmployeeDataTransfer.getAllEmployeesInDepartment(allEmployees, department)
+        res.status(200).send(employeesInDepartment);
     } catch (err) {
         res.status(Exception.getStatusByExceptionMessage(err)).send(err);
     }
@@ -121,8 +126,9 @@ app.post('/RoomManagement/Employee/AllEmployeeInOffice', Token.authenticateActor
     const {office} = req.body;
     try {
         UndefinedException.officeException(office);
-        const allEmployeeInOffice = await EmployeeRequestHandler.getAllEmployeesInAnOffice(office);
-        res.status(200).send(allEmployeeInOffice);
+        let allEmployees = await EmployeeRequestHandler.getAllEmployees(req.email);
+        let employeesInOffice = EmployeeDataTransfer.getAllEmployeesInOffice(allEmployees, office)
+        res.status(200).send(employeesInOffice);
     } catch (err) {
         res.status(Exception.getStatusByExceptionMessage(err)).send(err);
     }
@@ -132,7 +138,8 @@ app.post('/RoomManagement/Employee/EmployeeWorkingHour', Token.authenticateActor
     const {email} = req.body;
     try {
         UndefinedException.emailException(email);
-        const workingHour = await EmployeeRequestHandler.getWorkingHourOfEmployee(email);
+        let allEmployees = await EmployeeRequestHandler.getAllEmployees(req.email);
+        let workingHour = EmployeeDataTransfer.getWorkingHour(email, allEmployees)
         res.status(200).send(workingHour);
     } catch (err) {
         res.status(Exception.getStatusByExceptionMessage(err)).send(err);
