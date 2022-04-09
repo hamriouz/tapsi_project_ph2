@@ -3,7 +3,7 @@ const Employee = require("../Domain/Employee");
 
 class AdminRequestHandler{
     static async createAdmin(adminDetail) {
-        let {
+/*        let {
             name,
             familyName,
             email,
@@ -15,7 +15,7 @@ class AdminRequestHandler{
             workingHour
         } = adminDetail;
         if (!(name && familyName && email && password && phoneNumber && department && organizationLevel && office && workingHour))
-            throw ("please fill all the information");
+            throw ("please fill all the information");*/
         try {
             await Admin.createAdmin(adminDetail);
         } catch (err) {
@@ -24,7 +24,7 @@ class AdminRequestHandler{
     }
 
     static async registerEmployee(requestEmail, employeeDetail) {
-        let {
+    /*    let {
             name,
             familyName,
             email,
@@ -37,8 +37,8 @@ class AdminRequestHandler{
             role,
             status
         } = employeeDetail;
-        if (!(name && familyName && email && password && phoneNumber && department && organizationLevel && office && workingHour && role && status))
-            throw "please fill all the information";
+        if (!(name && familyName && email && password && phoneNumber && department && organizationLevel && office && workingHour && role && status))*/
+            // throw "please fill all the information";
         try {
             const admin = await Admin.getAdminByEmail(requestEmail);
             await admin.registerEmployee(employeeDetail);
@@ -48,8 +48,8 @@ class AdminRequestHandler{
     }
 
     static async login(email, password) {
-        if (!(email && password))
-            throw "please fill all the information";
+        // if (!(email && password))
+        //     throw "please fill all the information";
         try {
             Admin.login(email, password)
         } catch (err) {
@@ -67,8 +67,8 @@ class AdminRequestHandler{
     }
 
     static async changeEmployeeStatus(requestEmail, email) {
-        if (!(email))
-            throw ("please fill all the information");
+        // if (!(email))
+        //     throw ("please fill all the information");
         try {
             const admin = await Admin.getAdminByEmail(requestEmail);
             return await admin.enableDisableEmployee(email)
@@ -78,8 +78,8 @@ class AdminRequestHandler{
     }
 
     static async getDetailOneEmployee(requestEmail, email) {
-        if (!(email))
-            throw ("please fill all the information");
+        // if (!(email))
+        //     throw ("please fill all the information");
         try {
             const admin = await Admin.getAdminByEmail(requestEmail);
             return await admin.viewDetailOfOneEmployee(email)

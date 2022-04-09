@@ -1,10 +1,10 @@
 const {app} = require('../app');
-const Exception = require("../Util/Exception");
+const Exception = require("../Util/ExceptionHandler/Exception");
 const Token = require("./AccessManager/Token");
 const AccessManager = require("./AccessManager/AccessManager");
 const EmployeeRequestHandler = require('../Handler/EmployeeRequestHandler');
 const AdminRequestHandler = require('../Handler/AdminRequestHandler');
-
+const UndefinedException = require('../Util/ExceptionHandler/UndefinedException');
 
 const accessManager = new AccessManager();
 
@@ -12,6 +12,7 @@ const accessManager = new AccessManager();
 app.post('/RoomManagement/Admin/CreateAdmin', async (req, res) => {
     let adminData = req.body;
     try {
+        UndefinedException.allUserInfoException(adminData);
         await AdminRequestHandler.createAdmin(adminData);
         res.status(201).send("Admin was successfully created!");
     } catch (err) {
@@ -22,6 +23,7 @@ app.post('/RoomManagement/Admin/CreateAdmin', async (req, res) => {
 app.post('/RoomManagement/Admin/SignUpEmployee', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     let employeeData = req.body;
     try {
+        UndefinedException.allUserInfoException(employeeData);
         await AdminRequestHandler.registerEmployee(req.email, employeeData);
         res.status(201).send("Username with email address \"" + employeeData.email + "\" was successfully created!");
     } catch (err) {
@@ -32,6 +34,7 @@ app.post('/RoomManagement/Admin/SignUpEmployee', Token.authenticateActor, access
 app.post('/RoomManagement/Admin/Login', async (req, res) => {
     const {email, password} = req.body;
     try {
+        UndefinedException.emailPasswordException(email, password);
         await AdminRequestHandler.login(email, password);
         res.header('Authorization', Token.createToken(email, "admin"));
         res.status(200).send("The admin successfully logged in!");
@@ -43,6 +46,7 @@ app.post('/RoomManagement/Admin/Login', async (req, res) => {
 app.post('/RoomManagement/Employee/Login', async (req, res) => {
     const {email, password} = req.body;
     try {
+        UndefinedException.emailPasswordException(email, password);
         await EmployeeRequestHandler.login(email, password);
         res.header('Authorization', Token.createToken(email, "admin"));
         res.status(200).send("The admin successfully logged in!");
@@ -63,6 +67,7 @@ app.get('/RoomManagement/Admin/ListOfEmployees', Token.authenticateActor, access
 app.put('/RoomManagement/Admin/ChangeStatus', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     const {email} = req.body;
     try {
+        UndefinedException.emailException(email);
         let enOrDis = await AdminRequestHandler.changeEmployeeStatus(email);
         res.status(200).send("employee with the email address " + email + " was successfully " + enOrDis);
     } catch (err) {
@@ -73,6 +78,7 @@ app.put('/RoomManagement/Admin/ChangeStatus', Token.authenticateActor, accessMan
 app.get('/RoomManagement/Admin/ViewEmployee', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     const {email} = req.body;
     try {
+        UndefinedException.emailException(email);
         let employee = await AdminRequestHandler.getDetailOneEmployee(email);
         res.status(200).send(employee);
     } catch (err) {
@@ -103,6 +109,7 @@ app.put('/RoomManagement/Employee/EditEmployee', Token.authenticateActor, access
 app.post('/RoomManagement/Employee/AllEmployeeInDepartment', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     const {department} = req.body;
     try {
+        UndefinedException.departmentException(department);
         const allEmployeeInDepartment = await EmployeeRequestHandler.getAllEmployeesInADepartment(department);
         res.status(200).send(allEmployeeInDepartment);
     } catch (err) {
@@ -113,6 +120,7 @@ app.post('/RoomManagement/Employee/AllEmployeeInDepartment', Token.authenticateA
 app.post('/RoomManagement/Employee/AllEmployeeInOffice', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     const {office} = req.body;
     try {
+        UndefinedException.officeException(office);
         const allEmployeeInOffice = await EmployeeRequestHandler.getAllEmployeesInAnOffice(office);
         res.status(200).send(allEmployeeInOffice);
     } catch (err) {
@@ -123,6 +131,7 @@ app.post('/RoomManagement/Employee/AllEmployeeInOffice', Token.authenticateActor
 app.post('/RoomManagement/Employee/EmployeeWorkingHour', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     const {email} = req.body;
     try {
+        UndefinedException.emailException(email);
         const workingHour = await EmployeeRequestHandler.getWorkingHourOfEmployee(email);
         res.status(200).send(workingHour);
     } catch (err) {

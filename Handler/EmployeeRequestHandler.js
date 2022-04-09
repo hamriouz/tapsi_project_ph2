@@ -2,8 +2,8 @@ const Employee = require('../Domain/Employee');
 
 class EmployeeRequestHandler{
     static async login(email, password) {
-        if (!(email && password))
-            throw "please fill all the information";
+        // if (!(email && password))
+        //     throw "please fill all the information";
         try {
             Employee.login(email, password);
         } catch (err) {
@@ -21,8 +21,8 @@ class EmployeeRequestHandler{
     }
 
     static async getAllEmployeesInADepartment(requestEmail, department) {
-        if (!(department))
-            throw ("please fill all the information");
+        // if (!(department))
+        //     throw ("please fill all the information");
         try {
             const employee = await Employee.getEmployeeByEmail(requestEmail);
             return await employee.getAllEmployeesOfDepartment(department)
@@ -32,8 +32,8 @@ class EmployeeRequestHandler{
     }
 
     static async getAllEmployeesInAnOffice(requestEmail, office) {
-        if (!office)
-            throw ("please fill all the information");
+        // if (!office)
+        //     throw ("please fill all the information");
         try {
             const employee = await Employee.getEmployeeByEmail(requestEmail);
             return await employee.getAllEmployeesOfOffice(office);
@@ -43,8 +43,8 @@ class EmployeeRequestHandler{
     }
 
     static async getWorkingHourOfEmployee(requestEmail, email) {
-        if (!(email))
-            throw ("please fill all the information");
+        // if (!(email))
+        //     throw ("please fill all the information");
         try {
             const employee = await Employee.getEmployeeByEmail(requestEmail);
             return await employee.seeWorkingHour(email);
