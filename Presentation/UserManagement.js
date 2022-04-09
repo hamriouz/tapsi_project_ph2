@@ -11,7 +11,7 @@ const AdminDataTransfer = require('../DTO/AdminDataTransfer');
 const accessManager = new AccessManager();
 
 
-app.post('/RoomManagement/Admin/CreateAdmin', async (req, res) => {
+app.post('/room-management/admin/create-admin', async (req, res) => {
     let adminData = req.body;
     try {
         UndefinedException.allUserInfoException(adminData);
@@ -22,7 +22,7 @@ app.post('/RoomManagement/Admin/CreateAdmin', async (req, res) => {
     }
 })
 
-app.post('/RoomManagement/Admin/SignUpEmployee', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
+app.post('/room-management/admin/sign-up-employee', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     let employeeData = req.body;
     try {
         UndefinedException.allUserInfoException(employeeData);
@@ -33,7 +33,7 @@ app.post('/RoomManagement/Admin/SignUpEmployee', Token.authenticateActor, access
     }
 })
 
-app.post('/RoomManagement/Admin/Login', async (req, res) => {
+app.post('/room-management/admin/login', async (req, res) => {
     const {email, password} = req.body;
     try {
         UndefinedException.emailPasswordException(email, password);
@@ -45,7 +45,7 @@ app.post('/RoomManagement/Admin/Login', async (req, res) => {
     }
 })
 
-app.post('/RoomManagement/Employee/Login', async (req, res) => {
+app.post('/room-management/employee/login', async (req, res) => {
     const {email, password} = req.body;
     try {
         UndefinedException.emailPasswordException(email, password);
@@ -57,7 +57,7 @@ app.post('/RoomManagement/Employee/Login', async (req, res) => {
     }
 })
 
-app.get('/RoomManagement/Admin/ListOfEmployees', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
+app.get('/room-management/admin/list-of-employees', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     try {
         let allEmployees = await AdminRequestHandler.getAllEmployees(req.email);
         let listOfEmployees = AdminDataTransfer.getEmployeesDetail(allEmployees);
@@ -67,7 +67,7 @@ app.get('/RoomManagement/Admin/ListOfEmployees', Token.authenticateActor, access
     }
 })
 
-app.put('/RoomManagement/Admin/ChangeStatus', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
+app.put('/room-management/admin/change-status', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     const {email} = req.body;
     try {
         UndefinedException.emailException(email);
@@ -78,7 +78,7 @@ app.put('/RoomManagement/Admin/ChangeStatus', Token.authenticateActor, accessMan
     }
 })
 
-app.get('/RoomManagement/Admin/ViewEmployee', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
+app.get('/room-management/admin/view-employee', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     const {email} = req.body;
     try {
         UndefinedException.emailException(email);
@@ -90,7 +90,7 @@ app.get('/RoomManagement/Admin/ViewEmployee', Token.authenticateActor, accessMan
     }
 })
 
-app.put('/RoomManagement/Admin/EditEmployee', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
+app.put('/room-management/admin/edit-employee', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     let employeeNewDetail = req.body;
     try {
         await AdminRequestHandler.editEmployee(req.email, employeeNewDetail);
@@ -100,7 +100,7 @@ app.put('/RoomManagement/Admin/EditEmployee', Token.authenticateActor, accessMan
     }
 })
 
-app.put('/RoomManagement/Employee/EditEmployee', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
+app.put('/room-management/employee/edit-employee', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     const {name, familyName, workingHour} = req.body;
     try {
         await EmployeeRequestHandler.editEmployee(name, familyName, workingHour);
@@ -110,7 +110,7 @@ app.put('/RoomManagement/Employee/EditEmployee', Token.authenticateActor, access
     }
 })
 
-app.post('/RoomManagement/Employee/AllEmployeeInDepartment', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
+app.post('/room-management/employee/all-employee-in-department', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     const {department} = req.body;
     try {
         UndefinedException.departmentException(department);
@@ -122,7 +122,7 @@ app.post('/RoomManagement/Employee/AllEmployeeInDepartment', Token.authenticateA
     }
 })
 
-app.post('/RoomManagement/Employee/AllEmployeeInOffice', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
+app.post('/room-management/employee/all-employee-in-office', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     const {office} = req.body;
     try {
         UndefinedException.officeException(office);
@@ -134,7 +134,7 @@ app.post('/RoomManagement/Employee/AllEmployeeInOffice', Token.authenticateActor
     }
 })
 
-app.post('/RoomManagement/Employee/EmployeeWorkingHour', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
+app.post('/room-management/employee/employee-working-hour', Token.authenticateActor, accessManager.validateAccess, accessManager.isEnable, async (req, res) => {
     const {email} = req.body;
     try {
         UndefinedException.emailException(email);
