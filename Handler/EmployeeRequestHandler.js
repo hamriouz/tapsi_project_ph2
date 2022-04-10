@@ -1,8 +1,9 @@
 const Employee = require('../Domain/Employee');
 const {Admin} = require("../Domain/Admin");
+
 // const EmployeeDataTransfer = require('../DTO/EmployeeDataTransfer');
 
-class EmployeeRequestHandler{
+class EmployeeRequestHandler {
     static async login(email, password) {
         // if (!(email && password))
         //     throw "please fill all the information";
@@ -22,9 +23,9 @@ class EmployeeRequestHandler{
         }
     }
 
-    static async getAllEmployees(requestEmail){
+    static async getAllEmployees(requestEmail) {
         const employee = await Employee.getEmployeeByEmail(requestEmail);
-        return await employee.getAllEmployees();
+        return employee.getAllEmployees();
     }
 
     static async getUserByID(userIdentifier) {
@@ -32,6 +33,33 @@ class EmployeeRequestHandler{
             return await Employee.getEmployeeByIdentifier(userIdentifier)
         } catch (err) {
             return null;
+        }
+    }
+
+    static async getEmployeeWorkingHour(requestEmail, email) {
+        try {
+            const employee = await Employee.getEmployeeByEmail(requestEmail);
+            return await employee.seeWorkingHour(email);
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async getAllEmployeesInADepartment(requestEmail, department) {
+        try {
+            const employee = await Employee.getEmployeeByEmail(requestEmail);
+            return await employee.getAllEmployeesOfDepartment(department)
+        } catch (err) {
+            throw err
+        }
+    }
+
+    static async getAllEmployeesInAnOffice(requestEmail, office) {
+        try {
+            const employee = await Employee.getEmployeeByEmail(requestEmail);
+            return await employee.getAllEmployeesOfOffice(office);
+        } catch (err) {
+            throw err;
         }
     }
 

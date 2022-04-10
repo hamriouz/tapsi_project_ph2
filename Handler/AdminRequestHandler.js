@@ -1,21 +1,7 @@
 const {Admin} = require('../Domain/Admin');
 
-class AdminRequestHandler{
+class AdminRequestHandler {
     static async createAdmin(adminDetail) {
-/*        let {
-            name,
-            familyName,
-            email,
-            password,
-            phoneNumber,
-            department,
-            organizationLevel,
-            office,
-            workingHour
-        } = adminDetail;
-        if (!(name && familyName && email && password && phoneNumber && department && organizationLevel && office && workingHour))
-            throw ("please fill all the information");
-            */
         try {
             await Admin.createAdmin(adminDetail);
         } catch (err) {
@@ -24,21 +10,6 @@ class AdminRequestHandler{
     }
 
     static async registerEmployee(requestEmail, employeeDetail) {
-    /*    let {
-            name,
-            familyName,
-            email,
-            password,
-            phoneNumber,
-            department,
-            organizationLevel,
-            office,
-            workingHour,
-            role,
-            status
-        } = employeeDetail;
-        if (!(name && familyName && email && password && phoneNumber && department && organizationLevel && office && workingHour && role && status))
-             throw "please fill all the information";*/
         try {
             const admin = await Admin.getAdminByEmail(requestEmail);
             await admin.registerEmployee(employeeDetail);
@@ -48,23 +19,19 @@ class AdminRequestHandler{
     }
 
     static async login(email, password) {
-        // if (!(email && password))
-        //     throw "please fill all the information";
         try {
-            Admin.login(email, password)
+            await Admin.login(email, password)
         } catch (err) {
             throw err;
         }
     }
 
-    static async getAllEmployees(requestEmail){
+    static async getAllEmployees(requestEmail) {
         const admin = await Admin.getAdminByEmail(requestEmail);
-        return await admin.getAllEmployees();
+        return admin.getAllEmployees();
     }
 
     static async changeEmployeeStatus(requestEmail, email) {
-        // if (!(email))
-        //     throw ("please fill all the information");
         try {
             const admin = await Admin.getAdminByEmail(requestEmail);
             return await admin.enableDisableEmployee(email)
@@ -90,9 +57,17 @@ class AdminRequestHandler{
         }
     }
 
+    static async getEmployeeByEmail(email) {
+        try {
+            return await Admin.getAdminByEmail(email)
+        } catch (err) {
+            throw err
+        }
+    }
+
+
     /*static async getListOfEmployee(requestEmail) {
         try {
-            //todo
             return await AdminDataTransfer.getEmployeesDetail();
             // const admin = await Admin.getAdminByEmail(requestEmail);
             // return await admin.viewListOfEmployee();
@@ -107,14 +82,14 @@ class AdminRequestHandler{
           // if (!(email))
           //     throw ("please fill all the information");
           try {
-              //todo
               return await AdminDataTransfer.getEmployeeDetail();
               // const admin = await Admin.getAdminByEmail(requestEmail);
               // return await admin.viewDetailOfOneEmployee(email)
           } catch (err) {
               throw err
           }
-      }*/
+      }
+      */
 }
 
 

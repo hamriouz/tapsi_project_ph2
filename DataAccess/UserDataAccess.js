@@ -1,49 +1,32 @@
-const User = require("./db/models/User")
+const User = require("./db/models/User");
 
 class UserDataAccess {
-    async getAdmin() {
+    static async getAdmin() {
         return User.query().select('*').where('role', '=', "admin");
+        // return User.query().select('*').where('role', '=', "admin");
     }
 
-    async getUserByEmail(email) {
-        return User.query().select("*").where('email', '=', email);
+    static async getUserByEmail(email) {
+        return User.query().select("*").where('email', '=', email)[0];
     }
 
-    async getUserByIdentifier(identifier) {
+    static async getUserByIdentifier(identifier) {
         return User.query().select("*").findById(identifier);
     }
 
-    async getRole(email) {
-        return this.getUserByEmail(email)[0].role;
+    static async getRole(email) {
+        return this.getUserByEmail(email).role;
     }
 
-    async getPassword(email) {
-        return this.getUserByEmail(email)[0].password;
+    static async getPassword(email) {
+        return this.getUserByEmail(email).password;
     }
 
-    async getStatus(email) {
-        return this.getUserByEmail(email)[0].status;
+    static async getStatus(email) {
+        return this.getUserByEmail(email).status;
     }
 
-    async addAdmin(adminDetail, encryptedPassword) {
-        const {email, phoneNumber, name, familyName, department, organizationLevel, office, workingHour} = adminDetail;
-        await User.query().insert({
-            role: "admin",
-            email: email,
-            password: encryptedPassword,
-            phone_number: phoneNumber,
-            name: name,
-            family_name: familyName,
-            department: department,
-            organization_level: organizationLevel,
-            office: office,
-            working_hour: workingHour,
-            status: "enable",
-        });
-
-    }
-
-    async addEmployee(employeeDetail, encryptedPassword) {
+    static async addUser(employeeDetail, encryptedPassword, role) {
         const {
             role,
             email,
@@ -70,15 +53,15 @@ class UserDataAccess {
         });
     }
 
-    async getAllUsers(){
+    static async getAllUsers() {
         return User.query().select('*');
     }
 
-    async workingHour(email) {
-        return this.getUserByEmail(email)[0].working_hour;
+    static async workingHour(email) {
+        return this.getUserByEmail(email).working_hour;
     }
 
-    async changeName(name, email) {
+    static async updateName(name, email) {
         await User.query()
             .where("email", '=', email)
             .update({
@@ -86,7 +69,7 @@ class UserDataAccess {
             });
     }
 
-    async changeFamilyName(familyName, email) {
+    static async updateFamilyName(familyName, email) {
         await User.query()
             .where("email", '=', email)
             .update({
@@ -94,7 +77,7 @@ class UserDataAccess {
             });
     }
 
-    async changeDepartment(department, email) {
+    static async updateDepartment(department, email) {
         await User.query()
             .where("email", '=', email)
             .update({
@@ -102,7 +85,7 @@ class UserDataAccess {
             });
     }
 
-    async changeOrganizationLevel(organizationLevel, email) {
+    static async updateOrganizationLevel(organizationLevel, email) {
         await User.query()
             .where("email", '=', email)
             .update({
@@ -110,7 +93,7 @@ class UserDataAccess {
             });
     }
 
-    async changeOffice(office, email) {
+    static async updateOffice(office, email) {
         await User.query()
             .where("email", '=', email)
             .update({
@@ -118,7 +101,7 @@ class UserDataAccess {
             });
     }
 
-    async changeWorkingHour(workingHour, email) {
+    static async updateWorkingHour(workingHour, email) {
         await User.query()
             .where("email", '=', email)
             .update({
@@ -126,7 +109,7 @@ class UserDataAccess {
             });
     }
 
-    async changeRole(role, email) {
+    static async updateRole(role, email) {
         await User.query()
             .where("email", '=', email)
             .update({
@@ -134,7 +117,7 @@ class UserDataAccess {
             });
     }
 
-    async changeStatus(status, email) {
+    static async updateStatus(status, email) {
         await User.query()
             .where("email", '=', email)
             .update({
@@ -142,7 +125,7 @@ class UserDataAccess {
             });
     }
 
-    async enable(email) {
+    static async enable(email) {
         await User.query()
             .where("email", '=', email)
             .update({
@@ -150,7 +133,7 @@ class UserDataAccess {
             });
     }
 
-    async disable(email) {
+    static async disable(email) {
         await User.query()
             .where("email", '=', email)
             .update({
@@ -158,6 +141,21 @@ class UserDataAccess {
             });
     }
 
+    static async allEmployeeDepartment(department) {
+        return User.query().select(
+            'email',
+            'name',
+            'family_name')
+            .where("department", '=', department);
+    }
+
+    static async allEmployeeOffice(office) {
+        return User.query().select(
+            'email',
+            'name',
+            'family_name')
+            .where("office", '=', office);
+    }
 
     /*
         async listEmployeeAdmin() {
@@ -199,6 +197,7 @@ class UserDataAccess {
                 .where("office", '=', office);
         }
     */
+
 }
 
-module.exports = UserDataAccess
+module.exports = UserDataAccess;

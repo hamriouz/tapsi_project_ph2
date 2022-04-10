@@ -1,7 +1,7 @@
 const UserDataAccess = require('../../DataAccess/UserDataAccess')
 const ApiGroups = require('./ApiGroups');
 
-let userDataAccess = new UserDataAccess();
+// let UserDataAccess = new UserDataAccess();
 
 class AccessManager {
     validateAccess(req, res, next) {
@@ -15,9 +15,9 @@ class AccessManager {
     async  isEnable(req, res, next) {
         const email = req.userEmail;
         const tokenRole = req.userRole;
-        const user = await userDataAccess.getUserByEmail(email)
-        const userRole = await userDataAccess.getRole(email)
-        const userStatus = await userDataAccess.getStatus(email)
+        const user = await UserDataAccess.getUserByEmail(email)
+        const userRole = await UserDataAccess.getRole(email)
+        const userStatus = await UserDataAccess.getStatus(email)
 
         if (user) {
             if (userRole !== tokenRole)

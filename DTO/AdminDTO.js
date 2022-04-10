@@ -1,8 +1,5 @@
-const {employee} = require("../Presentation/AccessManager/ApiGroups");
-
-class AdminDataTransfer {
-    static async getEmployeeDetail(allEmployees, email) {
-        let wantedEmployee = allEmployees.filter(employee => employee.email === email)[0];
+class AdminDTO {
+    static getEmployeeDetail(wantedEmployee) {
         return {
             'name': wantedEmployee.name,
             'family name': wantedEmployee.familyName,
@@ -17,7 +14,7 @@ class AdminDataTransfer {
         };
     }
 
-    static async getEmployeesDetail(allEmployees) {
+    static getEmployeesDetail(allEmployees) {
         let filteredDetail = [];
         allEmployees.forEach(employee =>
             filteredDetail.push(
@@ -35,4 +32,4 @@ class AdminDataTransfer {
 }
 
 
-module.exports = AdminDataTransfer;
+module.exports = AdminDTO;
